@@ -1,4 +1,5 @@
-import { Box, Typography, useTheme } from "@mui/material";
+import React, { useState, useEffect } from "react";
+import { Box, Typography, useTheme, Button } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
@@ -6,15 +7,24 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../components/Header";
 
-const Team = ({ employees, projects }) => {
+const Team = ({
+  employees,
+  projects,
+  setRowSelectionModel,
+  rowSelectionModel,
+ handleSelectEmployees
+
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const projectCount = employees.map((employee) => {
-    return employee.projects.length;
+  const ongoingProjects = employees.map((employee) => {
+    return employee.projects.filter((project) => project.completed === false).length
+  });
+  const completedProjects = employees.map((employee) => {
+    return employee.projects.filter((project) => project.completed === true).length
   });
 
-
-  console.log(projectCount);
+console.log(completedProjects)
   const columns = [
     {
       field: "id",
@@ -29,19 +39,32 @@ const Team = ({ employees, projects }) => {
       cellClassName: "name-column--cell",
     },
     {
-      field: "projects",
+      field: "completed",
       headerName: "Completed",
       flex: 1,
       //return employee.projects.length
       renderCell: (params) => (
-        <Typography color={colors.primary[900]}>{projectCount[params.row.id - 1]}</Typography>
+        <Typography color={colors.primary[900]}>
+          {completedProjects[params.row.id - 1]}
+        </Typography>
       ),
     },
-    
+    {
+      field: "projects",
+      headerName: "Working On",
+      flex: 1,
+      //return employee.projects.length
+      renderCell: (params) => (
+        <Typography color={colors.primary[900]}>
+          {ongoingProjects[params.row.id - 1]}
+        </Typography>
+      ),
+    },
     {
       field: "title",
       headerName: "Job Title",
       flex: 1,
+      headerAlign: "center",
       renderCell: ({ row: { title } }) => {
         return (
           <Box
@@ -70,13 +93,13 @@ const Team = ({ employees, projects }) => {
       },
     },
   ];
-console.log(columns[0].field)
+  console.log(columns[0].field);
   return (
     <Box m="20px">
       <Header title="TEAM" subtitle="Managing the Team Members" />
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="70vh"
         border={2}
         borderColor={colors.grey[900]}
         borderRadius={2}
@@ -104,9 +127,26 @@ console.log(columns[0].field)
           "& .MuiCheckbox-root": {
             color: `${colors.blueAccent[400]} !important`,
           },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: colors.grey[700],
+          },
         }}
       >
-        <DataGrid checkboxSelection rows={employees} columns={columns} />
+        <DataGrid
+          checkboxSelection
+          onRowSelectionModelChange={(newRowSelectionModel) => {
+            setRowSelectionModel(newRowSelectionModel);
+          }}
+          rowSelectionModel={rowSelectionModel}
+          {...employees}
+          rows={employees}
+          columns={columns}
+        />
+        <Box display="flex" justifyContent="end" mt="20px">
+          <Button onClick={handleSelectEmployees} type="submit" color="secondary" variant="contained">
+            Assign Project
+          </Button>
+        </Box>
       </Box>
     </Box>
   );

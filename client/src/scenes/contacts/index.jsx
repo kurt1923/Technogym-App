@@ -85,6 +85,9 @@ const Contacts = ({ employees }) => {
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
             color: `${colors.grey[100]} !important`,
           },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: colors.grey[700],
+          },
         }}
       >
         <DataGrid

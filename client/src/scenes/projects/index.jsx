@@ -74,6 +74,9 @@ const Projects = ({ projects }) => {
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
             color: `${colors.grey[100]} !important`,
           },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: colors.grey[700],
+          },
         }}
       >
         <DataGrid checkboxSelection rows={projects} columns={columns} components={{ Toolbar: GridToolbar }} />
