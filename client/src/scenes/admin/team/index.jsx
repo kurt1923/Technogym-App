@@ -1,30 +1,31 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme, Button } from "@mui/material";
-import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { tokens } from "../../../theme";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import Header from "../../components/Header";
+import Header from "../../../components/Header";
 
 const Team = ({
   employees,
   projects,
   setRowSelectionModel,
   rowSelectionModel,
- handleSelectEmployees
-
+  handleSelectEmployees,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const ongoingProjects = employees.map((employee) => {
-    return employee.projects.filter((project) => project.completed === false).length
+    return employee.projects.filter((project) => project.completed === false)
+      .length;
   });
   const completedProjects = employees.map((employee) => {
-    return employee.projects.filter((project) => project.completed === true).length
+    return employee.projects.filter((project) => project.completed === true)
+      .length;
   });
 
-console.log(completedProjects)
+  console.log(rowSelectionModel);
   const columns = [
     {
       field: "id",
@@ -93,7 +94,6 @@ console.log(completedProjects)
       },
     },
   ];
-  console.log(columns[0].field);
   return (
     <Box m="20px">
       <Header title="TEAM" subtitle="Managing the Team Members" />
@@ -118,7 +118,7 @@ console.log(completedProjects)
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
-            backgroundColor: colors.grey[500],
+            backgroundColor: colors.grey[50],
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
@@ -126,6 +126,9 @@ console.log(completedProjects)
           },
           "& .MuiCheckbox-root": {
             color: `${colors.blueAccent[400]} !important`,
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[100]} !important`,
           },
           "& .MuiDataGrid-row:hover": {
             backgroundColor: colors.grey[700],
@@ -141,10 +144,17 @@ console.log(completedProjects)
           {...employees}
           rows={employees}
           columns={columns}
+          components={{ Toolbar: GridToolbar }}
         />
         <Box display="flex" justifyContent="end" mt="20px">
-          <Button onClick={handleSelectEmployees} type="submit" color="secondary" variant="contained">
-            Assign Project
+          <Button
+            onClick={handleSelectEmployees}
+            type="submit"
+            color="secondary"
+            variant="contained"
+            sx={{ width: "200px", mr: "10px" }}
+          >
+            Assign New Project
           </Button>
         </Box>
       </Box>

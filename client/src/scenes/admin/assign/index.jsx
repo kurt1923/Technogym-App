@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme, Button, TextField } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
-import { tokens } from "../../theme";
+import { tokens } from "../../../theme";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
-import Header from "../../components/Header";
+import Header from "../../../components/Header";
 import { Formik, Form, useField } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -18,7 +18,7 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
     name: "",
     description: "",
     completed: false,
-    employee_id: "",
+    employee_id: selectEmployees[0].id,
     admin_id: 1,
   });
 
@@ -29,28 +29,31 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
   //   });
   // }
 // console.log(values)
-  function handleFormSubmit(values) {
-    const newProjectValues = selectEmployees.map((employee) => ({
-      name: values.name,
-      description: values.description,
-      completed: false,
-      employee_id: employee.id,
-      admin_id: 1,
-    }));
+  function handleFormSubmit(values, { resetForm }) {
+    // const newProjectValues = selectEmployees.map((employee) => ({
+    //   name: values.name,
+    //   description: values.description,
+    //   completed: false,
+    //   employee_id: employee.id,
+    //   admin_id: 1,
+    // }));
     // console.log(newProjectValues);
     fetch(`/projects`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(newProjectValues),
+      body: JSON.stringify(values),
     })
       .then((r) => r.json())
       .then((data) => {
         addNewProject(data);
+        alert(`Project ${values.name} Added`);
+        resetForm();
       });
   }
-  
+  console.log(selectEmployees[0]);
+  console.log(initialValues);
 
   const columns = [
     {
