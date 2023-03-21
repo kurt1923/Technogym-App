@@ -174,14 +174,13 @@ const Sidebar = () => {
               selected={selected}
               setSelected={setSelected}
             />
-             {/* <Item
-              title="Assign"
-              to="/team/assign"
-              icon={<ReceiptOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            /> */}
-
+              <Item
+                title="Add Employee"
+                to="/addEmployee"
+                icon={<PersonOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+              />
             <Typography
               variant="h6"
               color={colors.grey[300]}
@@ -207,13 +206,6 @@ const Sidebar = () => {
               title="Create Account"
               to="/login"
               icon={<MapOutlinedIcon />}
-              selected={selected}
-              setSelected={setSelected}
-            />
-            <Item
-              title="Update Profile"
-              to="/form"
-              icon={<PersonOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />

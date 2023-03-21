@@ -3,13 +3,14 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { useState, useEffect } from "react";
+import { useNavigate, Routes, Route } from "react-router-dom";
 
-const Projects = ({ projects, handleDeleteProject, handleSelectProjects }) => {
+const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProjects }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const complete = projects.completed ? "Complete" : "Ongoing";
-  const [selectProjects, setSelectProjects] = useState([]);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  const navigate = useNavigate();
   const columns = [
     {
       field: "id",
@@ -52,6 +53,11 @@ const Projects = ({ projects, handleDeleteProject, handleSelectProjects }) => {
     });
     setSelectProjects(selectedProjects);
   }
+
+  function navToEdit() {
+    navigate("/projects/editProject");
+  }
+
   console.log(selectProjects);
 
   return (
@@ -124,7 +130,7 @@ const Projects = ({ projects, handleDeleteProject, handleSelectProjects }) => {
       ) : (
         <Box display="flex" justifyContent="end" mt="20px">
           <Button
-            onClick={console.log("hi")}
+            onClick={navToEdit}
             type="submit"
             color="secondary"
             variant="contained"

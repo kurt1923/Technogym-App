@@ -8,7 +8,7 @@ import Contacts from "./scenes/contacts";
 import Projects from "./scenes/admin/projects";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-import Form from "./scenes/form";
+import Form from "./scenes/addEmployee";
 import Assign from "./scenes/admin/assign";
 import EditProject from "./scenes/admin/editProject";
 
@@ -19,6 +19,7 @@ function App() {
   const [projects, setProjects] = useState([]);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [selectEmployees, setSelectEmployees] = useState([]);
+  const [selectProjects, setSelectProjects] = useState([]);
   
   const navigate = useNavigate();
 
@@ -38,6 +39,17 @@ function App() {
     const updatedProjects = [...projects, addedProject];
     setProjects(updatedProjects);
   }
+
+  function handleUpdateProject(patchedProject) {
+    const updatedProjects = projects.map((project) =>
+      project.id === patchedProject.id ? patchedProject : project
+    );
+    setProjects(updatedProjects);
+  }
+  // function updateQuantity(patchedItem) {
+  //   const updatedQuantity = storeItems.map((item) =>
+  //     item.id === patchedItem.id ? patchedItem : item
+  //   );
 
   function handleSelectEmployees() {
     const selectedEmployees = employees.filter((employee) => {
@@ -100,6 +112,8 @@ function App() {
                   <Projects
                   projects={projects}
                   handleDeleteProject={handleDeleteProject}
+                  selectProjects={selectProjects}
+                  setSelectProjects={setSelectProjects}
                   />
                 }
               />
@@ -107,11 +121,13 @@ function App() {
                   path="/projects/editProject"
                   element={
                     <EditProject
-                    
+                      projects={projects}
+                      selectProjects={selectProjects}
+                      handleUpdateProject={handleUpdateProject}
                     />
                   }
                 />
-              <Route path="/form" element={<Form />} />
+              <Route path="/addEmployee" element={<Form />} />
             </Routes>
           </main>
         </div>

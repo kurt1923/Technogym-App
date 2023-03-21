@@ -1,11 +1,14 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, TextField, useTheme } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import { tokens } from "../../theme";
 
 const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
 
   const handleFormSubmit = (values) => {
     console.log(values);
@@ -13,7 +16,10 @@ const Form = () => {
 
   return (
     <Box m="20px">
-      <Header title="Update Profile" subtitle="Complete Form and Submit to Update Profile/Password" />
+      <Header
+        title="Add Employee"
+        subtitle="Complete Form and Submit to Add New Employee"
+      />
 
       <Formik
         onSubmit={handleFormSubmit}
@@ -33,6 +39,11 @@ const Form = () => {
               display="grid"
               gap="30px"
               gridTemplateColumns="repeat(4, minmax(0, 1fr))"
+              ///change form color
+              backgroundColor={colors.blueAccent[700]}
+              border={2}
+              borderColor={colors.grey[900]}
+              borderRadius={2}
               sx={{
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
@@ -80,13 +91,26 @@ const Form = () => {
                 fullWidth
                 variant="filled"
                 type="text"
+                label="Password"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.password}
+                name="password"
+                error={!!touched.password && !!errors.password}
+                helperText={touched.password && errors.password}
+                sx={{ gridColumn: "span 4" }}
+              />
+              <TextField
+                fullWidth
+                variant="filled"
+                type="text"
                 label="Contact Number"
                 onBlur={handleBlur}
                 onChange={handleChange}
-                value={values.contact}
-                name="contact"
-                error={!!touched.contact && !!errors.contact}
-                helperText={touched.contact && errors.contact}
+                value={values.phone}
+                name="phone"
+                error={!!touched.phone && !!errors.phone}
+                helperText={touched.phone && errors.phone}
                 sx={{ gridColumn: "span 4" }}
               />
               <TextField
@@ -97,7 +121,7 @@ const Form = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.title}
-                name="address1"
+                name="title"
                 error={!!touched.title && !!errors.title}
                 helperText={touched.title && errors.title}
                 sx={{ gridColumn: "span 4" }}
@@ -110,9 +134,22 @@ const Form = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.address}
-                name="address2"
+                name="address"
                 error={!!touched.address && !!errors.address}
                 helperText={touched.address && errors.address}
+                sx={{ gridColumn: "span 4" }}
+              />
+                            <TextField
+                fullWidth
+                variant="filled"
+                type="text"
+                label="img"
+                onBlur={handleBlur}
+                onChange={handleChange}
+                value={values.img}
+                name="img"
+                error={!!touched.img && !!errors.img}
+                helperText={touched.img && errors.img}
                 sx={{ gridColumn: "span 4" }}
               />
             </Box>
@@ -135,20 +172,25 @@ const checkoutSchema = yup.object().shape({
   firstName: yup.string().required("required"),
   lastName: yup.string().required("required"),
   email: yup.string().email("invalid email").required("required"),
+  password: yup
+    .string()
+    .min(8, "Password must be at least 8 characters")
+    .required("required"),
   contact: yup
     .string()
     .matches(phoneRegExp, "Phone number is not valid")
     .required("required"),
   address1: yup.string().required("required"),
-  address2: yup.string().required("required"),
 });
 const initialValues = {
   firstName: "",
   lastName: "",
   email: "",
-  contact: "",
+  password: "",
   title: "",
+  phone: "",
   address: "",
+  img: "",
 };
 
 export default Form;

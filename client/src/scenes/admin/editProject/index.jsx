@@ -6,25 +6,43 @@ import { Formik, Form, useField } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const EditProject = () => {
+const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+
   const [initialValues, setInitialValues] = useState({
-    name: "",
-    description: "",
+    name: selectProjects[0].name,
+    description: selectProjects[0].description,
     completed: false,
-    employee_id: "",
+    employee_id: selectProjects[0].employee_id,
     admin_id: 1,
   });
+
+
+  function updateProject(values) {
+    fetch(`/projects/${selectProjects[0].id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(values),
+    })
+      .then((r) => r.json())
+      .then((data) => {
+        handleUpdateProject(data);
+        alert(`Project ${values.name} Updated`);
+      });
+  }
+  console.log(selectProjects)
   return (
-    <Box>
+    <Box m="20px">
       <Header
         title="Edit Project"
         subtitle="Add Project Name, Description, and Submit!"
       />
       <Formik
-        onSubmit={console.log("hi")}
+        onSubmit={updateProject}
         initialValues={initialValues}
         validationSchema={checkoutSchema}
       >
