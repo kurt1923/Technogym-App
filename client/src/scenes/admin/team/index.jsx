@@ -108,13 +108,14 @@ const Team = ({
             border: "none",
           },
           "& .MuiDataGrid-cell": {
+            color: colors.primary[900],
             borderBottom: "none",
           },
           "& .name-column--cell": {
             color: colors.primary[900],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -122,13 +123,13 @@ const Team = ({
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
           },
           "& .MuiCheckbox-root": {
             color: `${colors.blueAccent[400]} !important`,
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
+            color: `${colors.grey[900]} !important`,
           },
           "& .MuiDataGrid-row:hover": {
             backgroundColor: colors.grey[700],
@@ -150,9 +151,9 @@ const Team = ({
           <Button
             onClick={handleSelectEmployees}
             type="submit"
-            color="secondary"
+            
             variant="contained"
-            sx={{ width: "200px", mr: "10px" }}
+            sx={{ width: "200px", mr: "10px", backgroundColor: colors.blueAccent[300] }}
           >
             Assign New Project
           </Button>

@@ -5,7 +5,12 @@ import Header from "../../../components/Header";
 import { useState, useEffect } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
-const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProjects }) => {
+const Projects = ({
+  projects,
+  handleDeleteProject,
+  selectProjects,
+  setSelectProjects,
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const complete = projects.completed ? "Complete" : "Ongoing";
@@ -55,7 +60,7 @@ const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProj
   }
 
   function navToEdit() {
-    navigate("/projects/editProject");
+    navigate("/admin/projects/editProject");
   }
 
   console.log(selectProjects);
@@ -81,7 +86,7 @@ const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProj
             color: colors.primary[900],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -89,13 +94,13 @@ const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProj
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
           },
           "& .MuiCheckbox-root": {
             color: `${colors.blueAccent[400]} !important`,
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
+            color: `${colors.grey[900]} !important`,
           },
           "& .MuiDataGrid-row:hover": {
             backgroundColor: colors.grey[700],
@@ -120,9 +125,12 @@ const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProj
           <Button
             onClick={handleSelectProjects}
             type="submit"
-            color="secondary"
+            sx={{
+              backgroundColor: colors.blueAccent[300],
+              width: "200px",
+              mr: "10px",
+            }}
             variant="contained"
-            sx={{ width: "200px", mr: "10px" }}
           >
             Select Project
           </Button>
@@ -132,18 +140,24 @@ const Projects = ({ projects, handleDeleteProject, selectProjects, setSelectProj
           <Button
             onClick={navToEdit}
             type="submit"
-            color="secondary"
             variant="contained"
-            sx={{ width: "200px", mr: "10px" }}
+            sx={{
+              backgroundColor: colors.blueAccent[300],
+              width: "200px",
+              mr: "10px",
+            }}
           >
             Edit Project
           </Button>
           <Button
             onClick={deleteProject}
             type="submit"
-            color="secondary"
             variant="contained"
-            sx={{ width: "200px", mr: "10px" }}
+            sx={{
+              backgroundColor: colors.blueAccent[300],
+              width: "200px",
+              mr: "10px",
+            }}
           >
             Delete Project
           </Button>

@@ -56,7 +56,8 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <Box
-              backgroundColor={colors.blueAccent[700]}
+              backgroundColor={colors.grey[100]}
+              padding={2}
               display="grid"
               gap="30px"
               border={2}
@@ -64,6 +65,19 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
               borderRadius={2}
               gridTemplateColumns="repeat(1, minmax(0, 1fr))"
               sx={{
+                "& .MuiInputBase-input": {
+                  background: colors.primary[400],
+                  color: colors.grey[100],
+                  borderRadius: "4px",
+                },
+                "& .MuiTextField-root": {
+                  color: colors.primary[100],
+                },
+                "& .MuiInputBase-root": {
+                  background: colors.primary[400],
+                  color: colors.primary[900],
+                  borderRadius: "4px",
+                },
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
             >
@@ -96,7 +110,7 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
                 sx={{ gridColumn: "span 2" }}
               />
               <Box display="flex" justifyContent="center" m="10px" p="10px">
-                <Button type="submit" color="secondary" variant="contained">
+                <Button type="submit" sx={{ backgroundColor: colors.blueAccent[300] }} variant="contained">
                   Submit Project
                 </Button>
               </Box>

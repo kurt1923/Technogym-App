@@ -8,9 +8,11 @@ import Contacts from "./scenes/contacts";
 import Projects from "./scenes/admin/projects";
 import Topbar from "./scenes/global/Topbar";
 import Sidebar from "./scenes/global/Sidebar";
-import Form from "./scenes/addEmployee";
+import AddEmployee from "./scenes/admin/addEmployee";
 import Assign from "./scenes/admin/assign";
 import EditProject from "./scenes/admin/editProject";
+import Login from "./scenes/admin/login";
+import AdminDashboard from "./scenes/admin/admindashboard";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -20,7 +22,7 @@ function App() {
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [selectEmployees, setSelectEmployees] = useState([]);
   const [selectProjects, setSelectProjects] = useState([]);
-  
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -57,13 +59,18 @@ function App() {
     });
     rowSelectionModel.length === 0
       ? alert("Please Select a Project.")
-      : navigate("/team/assign");
+      : navigate("/admin/team/assign");
     setSelectEmployees(selectedEmployees);
     // setRowSelectionModel([]);
     // setSelectEmployees([]);
   }
 
-
+  function handleUpdateEmployees(patchedEmployee) {
+    const updatedEmployees = employees.map((employee) =>
+      employee.id === patchedEmployee.id ? patchedEmployee : employee
+    );
+    setEmployees(updatedEmployees);
+  }
 
   function handleDeleteProject(id) {
     const updatedProjects = projects.filter((project) => project.id !== id);
@@ -79,9 +86,9 @@ function App() {
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
-              {/* <Route path="/" element={<Dashboard />} /> */}
+              <Route path="/admin" element={<AdminDashboard />} />
               <Route
-                path="/team"
+                path="/admin/team"
                 element={
                   <Team
                     employees={employees}
@@ -93,7 +100,7 @@ function App() {
                 }
               />
               <Route
-                path="/team/assign"
+                path="/admin/team/assign"
                 element={
                   <Assign
                     employees={employees}
@@ -107,27 +114,38 @@ function App() {
                 element={<Contacts employees={employees} />}
               />
               <Route
-                path="/projects"
+                path="/admin/projects"
                 element={
                   <Projects
-                  projects={projects}
-                  handleDeleteProject={handleDeleteProject}
-                  selectProjects={selectProjects}
-                  setSelectProjects={setSelectProjects}
+                    projects={projects}
+                    handleDeleteProject={handleDeleteProject}
+                    selectProjects={selectProjects}
+                    setSelectProjects={setSelectProjects}
                   />
                 }
               />
-                <Route
-                  path="/projects/editProject"
-                  element={
-                    <EditProject
-                      projects={projects}
-                      selectProjects={selectProjects}
-                      handleUpdateProject={handleUpdateProject}
-                    />
-                  }
-                />
-              <Route path="/addEmployee" element={<Form />} />
+              <Route
+                path="/admin/projects/editProject"
+                element={
+                  <EditProject
+                    projects={projects}
+                    selectProjects={selectProjects}
+                    handleUpdateProject={handleUpdateProject}
+                  />
+                }
+              />
+              <Route
+                path="/admin/addEmployee"
+                element={
+                  <AddEmployee handleUpdateEmployees={handleUpdateEmployees} />
+                }
+              />
+              <Route
+                path="/login"
+                element={
+                  <Login />
+                }
+              />
             </Routes>
           </main>
         </div>

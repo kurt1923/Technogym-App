@@ -69,7 +69,7 @@ const Contacts = ({ employees }) => {
             color: colors.primary[900],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -77,13 +77,13 @@ const Contacts = ({ employees }) => {
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
           },
           "& .MuiCheckbox-root": {
             color: `${colors.greenAccent[200]} !important`,
           },
           "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
-            color: `${colors.grey[100]} !important`,
+            color: `${colors.grey[900]} !important`,
           },
           "& .MuiDataGrid-row:hover": {
             backgroundColor: colors.grey[700],

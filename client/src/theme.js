@@ -142,7 +142,7 @@ export const themeSettings = (mode) => {
               light: colors.grey[100],
             },
             background: {
-              default: colors.grey[600],
+              default: colors.grey[100],
             },
           }
         : {
@@ -184,11 +184,11 @@ export const themeSettings = (mode) => {
       },
       h5: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 16,
+        fontSize: 18,
       },
       h6: {
         fontFamily: ["Source Sans Pro", "sans-serif"].join(","),
-        fontSize: 14,
+        fontSize: 16,
       },
     },
   };

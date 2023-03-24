@@ -122,7 +122,7 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
             color: colors.primary[900],
           },
           "& .MuiDataGrid-columnHeaders": {
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
             borderBottom: "none",
           },
           "& .MuiDataGrid-virtualScroller": {
@@ -130,7 +130,7 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
           },
           "& .MuiDataGrid-footerContainer": {
             borderTop: "none",
-            backgroundColor: colors.blueAccent[300],
+            backgroundColor: colors.primary[300],
           },
           "& .MuiCheckbox-root": {
             color: `${colors.blueAccent[400]} !important`,
@@ -166,7 +166,8 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
         }) => (
           <Form onSubmit={handleSubmit}>
             <Box
-              backgroundColor={colors.blueAccent[700]}
+              backgroundColor={colors.grey[100]}
+              padding={2}
               display="grid"
               gap="30px"
               border={2}
@@ -174,12 +175,28 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
               borderRadius={2}
               gridTemplateColumns="repeat(1, minmax(0, 1fr))"
               sx={{
+                "& .MuiInputBase-input": {
+                  background: colors.primary[400],
+                  color: colors.grey[100],
+                  borderRadius: "4px",
+                },
+                "& .MuiTextField-root": {
+                  color: colors.primary[100],
+                },
+                "& .MuiInputBase-root": {
+                  background: colors.primary[400],
+                  color: colors.primary[900],
+                  borderRadius: "4px",
+                },
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
+              // sx={{
+              //   "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+              // }}
             >
               <TextField
                 fullWidth
-                variant="filled"
+                // variant="filled"
                 type="text"
                 label="Project Name"
                 onBlur={handleBlur}
@@ -193,10 +210,11 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
               <TextField
                 fullWidth
                 multiline={true}
-                rows={4}
-                variant="filled"
+                rows={5}
+                // variant="filled"
                 type="text"
-                label="Description"
+                placeholder="Description"
+                // label="Description"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.description}
@@ -206,7 +224,7 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
                 sx={{ gridColumn: "span 2" }}
               />
               <Box display="flex" justifyContent="center" m="10px" p="10px">
-                <Button type="submit" color="secondary" variant="contained">
+                <Button type="submit" sx={{ backgroundColor: colors.blueAccent[300] }} variant="contained">
                   Submit Project
                 </Button>
               </Box>

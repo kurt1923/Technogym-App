@@ -102,12 +102,12 @@ const Sidebar = () => {
               </Box>
               <Box textAlign="center">
                 <Typography
-                  variant="h2"
+                  variant="h3"
                   color={colors.grey[100]}
                   fontWeight="bold"
-                  sx={{ m: "10px 0 0 0" }}
+                  sx={{ m: "10px 0 3px 0" }}
                 >
-                  Ed Roh
+                  Kurt Vermillion
                 </Typography>
                 <Typography variant="h5" color={colors.greenAccent[500]}>
                   TAPS Admin
@@ -161,22 +161,29 @@ const Sidebar = () => {
               Admin
             </Typography>
             <Item
+              title="Dashboard"
+              to="/admin"
+              icon={<HomeOutlinedIcon />}
+              selected={selected}
+              setSelected={setSelected}
+            />
+            <Item
               title="Manage Team"
-              to="/team"
+              to="/admin/team"
               icon={<PeopleOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
             <Item
               title="Projects"
-              to="/projects"
+              to="/admin/projects"
               icon={<ReceiptOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
             />
               <Item
                 title="Add Employee"
-                to="/addEmployee"
+                to="/admin/addEmployee"
                 icon={<PersonOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}

@@ -13,7 +13,7 @@ class EmployeesController < ApplicationController
     end
 
     def create
-        employee = employee.create!(employee_params)
+        employee = Employee.create!(employee_params)
         render json: employee, status: :created
     end
 
@@ -32,7 +32,7 @@ class EmployeesController < ApplicationController
     private
 
     def employee_params
-        params.permit(:firstname, :lastname, :email, :password, :phone, :address, :img)
+        params.permit(:firstname, :lastname, :email, :password, :phone, :title, :address, :img)
     end
 
     def find_employee
