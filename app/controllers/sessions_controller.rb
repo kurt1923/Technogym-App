@@ -8,6 +8,7 @@ def create
     else
         render json: { errors: ["Invalid email or password"] }, status: :unauthorized
     end
+end
 
     def destroy
         session.delete :admin_id

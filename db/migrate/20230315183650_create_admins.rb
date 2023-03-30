@@ -4,7 +4,7 @@ class CreateAdmins < ActiveRecord::Migration[6.1]
       t.string :firstname
       t.string :lastname
       t.string :email
-      t.string :password
+      t.string :password_digest
       t.string :title
       t.string :phone
       t.string :address

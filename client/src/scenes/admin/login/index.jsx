@@ -9,18 +9,43 @@ import Box from "@mui/material/Box";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
-import image from ".//loginPic.png"
+import image from ".//loginPic.png";
 import Header from "../../../components/Header";
 
-const Login = () => {
+const Login = ({ user, setUser }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    fetch("/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email: data.get("email"),
+        password: data.get("password"),
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setUser(data);
+      });
   };
+  
+      
+  
+    // const handleSubmit = (event) => {
+    //   event.preventDefault();
+    //   const data = new FormData(event.currentTarget);
+    //   console.log({
+    //     email: data.get('email'),
+    //     password: data.get('password'),
+    //   });
+    // };
+    console.log(user)
+    
 
   return (
     <Container component="main" maxWidth="lg">
@@ -29,10 +54,7 @@ const Login = () => {
           marginTop: 8,
         }}
       >
-            <Header
-        title="Admin Login"
-        subtitle="Login to Admin Portal"
-      />
+        <Header title="Admin Login" subtitle="Login to Admin Portal" />
         <Grid container>
           <CssBaseline />
           <Grid
@@ -41,7 +63,7 @@ const Login = () => {
             sm={5}
             md={6}
             sx={{
-                //use client/pics/2023-03-22.png
+              //use client/pics/2023-03-22.png
               backgroundImage: `url(${image})`,
               backgroundRepeat: "no-repeat",
               backgroundColor: (t) =>
@@ -130,6 +152,6 @@ const Login = () => {
       </Box>
     </Container>
   );
-}
+};
 
 export default Login;

@@ -22,6 +22,8 @@ function App() {
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [selectEmployees, setSelectEmployees] = useState([]);
   const [selectProjects, setSelectProjects] = useState([]);
+  const [admin, setAdmin] = useState([]);
+  const [user, setUser] = useState([]);
 
   const navigate = useNavigate();
 
@@ -37,6 +39,12 @@ function App() {
       .then((data) => setProjects(data));
   }, []);
 
+  useEffect(() => {
+    fetch("/admins")
+      .then((res) => res.json())
+      .then((data) => setAdmin(data));
+  }, []);
+console.log(admin)
   function addNewProject(addedProject) {
     const updatedProjects = [...projects, addedProject];
     setProjects(updatedProjects);
@@ -64,6 +72,7 @@ function App() {
     // setRowSelectionModel([]);
     // setSelectEmployees([]);
   }
+  console.log(user)
 
   function handleUpdateEmployees(patchedEmployee) {
     const updatedEmployees = employees.map((employee) =>
@@ -82,7 +91,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} />
+          <Sidebar isSidebar={isSidebar} user={user} />
           <main className="content">
             <Topbar setIsSidebar={setIsSidebar} />
             <Routes>
@@ -143,7 +152,7 @@ function App() {
               <Route
                 path="/login"
                 element={
-                  <Login />
+                  <Login user={user} setUser={setUser} />
                 }
               />
             </Routes>
