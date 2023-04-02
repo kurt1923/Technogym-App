@@ -9,7 +9,11 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_resp
 
     def show
         admin = Admin.find(session[:admin_id])
-        render json: admin
+        if admin
+            render json: admin, include: :projects
+        else
+            render json: { errors: ["Not authorized"] }, status: :unauthorized
+        end
     end
 
     def create

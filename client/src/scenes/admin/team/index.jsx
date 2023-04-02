@@ -6,16 +6,20 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const Team = ({
   employees,
   projects,
   setRowSelectionModel,
   rowSelectionModel,
-  handleSelectEmployees,
+  selectEmployees,
+  setSelectEmployees,
+  handleDeleteEmployee,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const ongoingProjects = employees.map((employee) => {
     return employee.projects.filter((project) => project.completed === false)
       .length;
@@ -24,8 +28,28 @@ const Team = ({
     return employee.projects.filter((project) => project.completed === true)
       .length;
   });
+  function handleSelectEmployees(rowSelectionModel) {
+    const selectedEmployees = employees.filter((employee) => {
+      return rowSelectionModel.includes(employee.id);
+    });
+    rowSelectionModel.length === 0
+      ? setSelectEmployees([])
+      : setSelectEmployees(selectedEmployees);
+  }
+  function navToAssign() {
+    navigate("/admin/team/assign");
+  }
+  function deleteEmployee() {
+    fetch(`/employees/${selectEmployees[0].id}`, {
+      method: "DELETE",
+    });
+    handleDeleteEmployee(selectEmployees[0].id);
+    setSelectEmployees([]);
+  }
 
   console.log(rowSelectionModel);
+  console.log(selectEmployees);
+  
   const columns = [
     {
       field: "id",
@@ -94,6 +118,7 @@ const Team = ({
       },
     },
   ];
+  
   return (
     <Box m="20px">
       <Header title="TEAM" subtitle="Managing the Team Members" />
@@ -145,6 +170,7 @@ const Team = ({
           checkboxSelection
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
+            handleSelectEmployees(newRowSelectionModel)
           }}
           rowSelectionModel={rowSelectionModel}
           {...employees}
@@ -152,18 +178,50 @@ const Team = ({
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />
+      </Box>
+      {selectEmployees.length === 0 ? (
         <Box display="flex" justifyContent="end" mt="20px">
           <Button
-            onClick={handleSelectEmployees}
+            onClick={() => {alert ("Select an Employee By Clicking the Checkbox")}}
             type="submit"
-            
+            sx={{
+              backgroundColor: colors.blueAccent[300],
+              width: "200px",
+              mr: "10px",
+            }}
             variant="contained"
-            sx={{ width: "200px", mr: "10px", backgroundColor: colors.blueAccent[300] }}
+          >
+            Select Employee
+          </Button>
+        </Box>
+      ) : (
+        <Box display="flex" justifyContent="end" mt="20px">
+          <Button
+            onClick={navToAssign}
+            type="submit"
+            variant="contained"
+            sx={{
+              width: "200px",
+              mr: "10px",
+              backgroundColor: colors.blueAccent[300],
+            }}
           >
             Assign New Project
           </Button>
+          <Button
+            onClick={deleteEmployee}
+            type="submit"
+            variant="contained"
+            sx={{
+              width: "200px",
+              mr: "10px",
+              backgroundColor: colors.blueAccent[300],
+            }}
+          >
+            Delete Employee
+          </Button>
         </Box>
-      </Box>
+      )}
     </Box>
   );
 };

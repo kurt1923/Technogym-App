@@ -1,6 +1,7 @@
 class EmployeesController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :invalid_project
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+    # before_action :authorize
 
     def index
         employees = Employee.all
@@ -45,5 +46,9 @@ class EmployeesController < ApplicationController
     
     def render_unprocessable_entity_response(exception)
         render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
+    end
+
+    def authorize
+        return render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :admin_id
     end
 end

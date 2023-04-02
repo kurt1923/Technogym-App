@@ -95,7 +95,6 @@ const AddEmployee = ({ handleUpdateEmployees }) => {
                 name="firstname"
                 error={!!touched.firstname && !!errors.firstname}
                 helperText={touched.firstname && errors.firstname}
-                inputProps
                 sx={{ gridColumn: "span 2" }}
               />
               <TextField

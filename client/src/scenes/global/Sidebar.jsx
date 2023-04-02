@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -39,7 +39,7 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = ({ user }) => {
+const Sidebar = ({ user, handleLogoutClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -104,7 +104,7 @@ const Sidebar = ({ user }) => {
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
-              {user.length === 0 ? (
+              {user === null ? (
                 <Box textAlign="center">
                   <Typography
                     variant="h3"
@@ -308,6 +308,11 @@ const Sidebar = ({ user }) => {
                 icon={<MapOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
+              />
+              <Item
+                title="Logout"
+                icon={<MapOutlinedIcon />}
+                onClick={handleLogoutClick}
               />
               <Item
                 title="Create Account"

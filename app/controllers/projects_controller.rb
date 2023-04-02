@@ -1,15 +1,16 @@
 class ProjectsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :invalid_project
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+    # before_action :authorize
 
     def index
         projects = Project.all
-        render json: projects
+        render json: projects, include: :admin, include: :employee
     end
     
     def show
         project = find_project
-        render json: project
+        render json: project, include: :admin, include: :employee
     end
 
     def create
@@ -45,5 +46,9 @@ class ProjectsController < ApplicationController
 
     def render_unprocessable_entity_response(exception)
         render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
+    end
+
+    def authorize
+        return render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :admin_id
     end
 end

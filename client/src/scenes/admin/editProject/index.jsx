@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, useTheme, Button, TextField } from "@mui/material";
+import { Box, Typography, useTheme, Button, TextField, Checkbox } from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { Formik, Form, useField } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useNavigate, Routes, Route } from "react-router-dom";
 
 const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const navigate = useNavigate();
 
   const [initialValues, setInitialValues] = useState({
     name: selectProjects[0].name,
     description: selectProjects[0].description,
-    completed: false,
+    completed: selectProjects[0].completed,
     employee_id: selectProjects[0].employee_id,
     admin_id: 1,
   });
@@ -32,6 +34,7 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
       .then((data) => {
         handleUpdateProject(data);
         alert(`Project ${values.name} Updated`);
+        navigate("/admin/projects");
       });
   }
   console.log(selectProjects)
@@ -78,7 +81,14 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
                   color: colors.primary[900],
                   borderRadius: "4px",
                 },
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" 
+              },
+              "& .MuiCheckbox-root": {
+                color: colors.primary[900],
+                },
+                "& .MuiCheckbox-colorSecondary.Mui-checked": {
+                  color: colors.primary[900],
+                },
               }}
             >
               <TextField
@@ -107,8 +117,23 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
                 name="description"
                 error={!!touched.description && !!errors.description}
                 helperText={touched.description && errors.description}
-                sx={{ gridColumn: "span 2" }}
+                sx={{ gridColumn: "span 2", color: colors.primary[900] }}
               />
+              <Typography variant="h6" sx={{ color: colors.primary[900],
+              paddingLeft: "10px"
+              }}>
+                Completed
+              <Checkbox
+                label="Completed"
+                title="Completed"
+                value={values.completed}
+                checked={values.completed}
+                onChange={handleChange}
+                name="completed"
+                sx={{color: colors.primary[900], 
+                }}
+              />
+              </Typography>
               <Box display="flex" justifyContent="center" m="10px" p="10px">
                 <Button type="submit" sx={{ backgroundColor: colors.blueAccent[300] }} variant="contained">
                   Submit Project

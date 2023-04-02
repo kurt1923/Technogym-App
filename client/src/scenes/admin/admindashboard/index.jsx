@@ -9,17 +9,22 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 
 
 
-const AdminDashboard = () => {
+const AdminDashboard = ({ user }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
 
-
+console.log(user)
     return (
         <Box m="20px">
-        {/* HEADER */}
+          {user === null ?         
+          <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Header title= "Login to view your dashboard"
+          subtitle="Welcome to your dashboard" />
+          </Box>:
+          
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Header title="DASHBOARD" subtitle="Welcome to your dashboard" />
-  
+          <Header title= {`${user.firstname} ${user.lastname}`}
+          subtitle="Welcome to your dashboard" />
           <Box>
             <Button
               sx={{
@@ -35,9 +40,8 @@ const AdminDashboard = () => {
             </Button>
           </Box>
         </Box>
+          }
         </Box>
-  
- 
     );
   };
 

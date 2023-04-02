@@ -19,13 +19,29 @@ function App() {
   const [isSidebar, setIsSidebar] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [projects, setProjects] = useState([]);
+  const [admin, setAdmin] = useState([]);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [selectEmployees, setSelectEmployees] = useState([]);
   const [selectProjects, setSelectProjects] = useState([]);
-  const [admin, setAdmin] = useState([]);
-  const [user, setUser] = useState([]);
-
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    fetch("/me").then((response) => {
+      if (response.ok) {
+        response.json().then((user) => setUser(user));
+      }
+    });
+  }, []);
+  
+  function handleLogoutClick() {
+    fetch("/logout", { method: "DELETE" }).then((r) => {
+      if (r.ok) {
+        setUser(null);
+        navigate("/login");
+      }
+    });
+  }
 
   useEffect(() => {
     fetch("/employees")
@@ -44,7 +60,9 @@ function App() {
       .then((res) => res.json())
       .then((data) => setAdmin(data));
   }, []);
-console.log(admin)
+
+  console.log(user);
+
   function addNewProject(addedProject) {
     const updatedProjects = [...projects, addedProject];
     setProjects(updatedProjects);
@@ -56,23 +74,6 @@ console.log(admin)
     );
     setProjects(updatedProjects);
   }
-  // function updateQuantity(patchedItem) {
-  //   const updatedQuantity = storeItems.map((item) =>
-  //     item.id === patchedItem.id ? patchedItem : item
-  //   );
-
-  function handleSelectEmployees() {
-    const selectedEmployees = employees.filter((employee) => {
-      return rowSelectionModel.includes(employee.id);
-    });
-    rowSelectionModel.length === 0
-      ? alert("Please Select a Project.")
-      : navigate("/admin/team/assign");
-    setSelectEmployees(selectedEmployees);
-    // setRowSelectionModel([]);
-    // setSelectEmployees([]);
-  }
-  console.log(user)
 
   function handleUpdateEmployees(patchedEmployee) {
     const updatedEmployees = employees.map((employee) =>
@@ -86,25 +87,32 @@ console.log(admin)
     setProjects(updatedProjects);
   }
 
+  function handleDeleteEmployee(id) {
+    const updatedEmployees = employees.filter((employee) => employee.id !== id);
+    setEmployees(updatedEmployees);
+  }
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} user={user} />
+          <Sidebar isSidebar={isSidebar} user={user} handleLogoutClick={handleLogoutClick} />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} />
+            <Topbar setIsSidebar={setIsSidebar} handleLogoutClick={handleLogoutClick} />
             <Routes>
-              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin" element={<AdminDashboard user={user} />} />
               <Route
                 path="/admin/team"
                 element={
                   <Team
                     employees={employees}
                     projects={projects}
-                    handleSelectEmployees={handleSelectEmployees}
+                    selectEmployees={selectEmployees}
+                    setSelectEmployees={setSelectEmployees}
                     rowSelectionModel={rowSelectionModel}
                     setRowSelectionModel={setRowSelectionModel}
+                    handleDeleteEmployee={handleDeleteEmployee}
                   />
                 }
               />
@@ -115,6 +123,7 @@ console.log(admin)
                     employees={employees}
                     selectEmployees={selectEmployees}
                     addNewProject={addNewProject}
+                    user={user}
                   />
                 }
               />
@@ -130,6 +139,9 @@ console.log(admin)
                     handleDeleteProject={handleDeleteProject}
                     selectProjects={selectProjects}
                     setSelectProjects={setSelectProjects}
+                    employees={employees}
+                    rowSelectionModel={rowSelectionModel}
+                    setRowSelectionModel={setRowSelectionModel}
                   />
                 }
               />
@@ -151,9 +163,7 @@ console.log(admin)
               />
               <Route
                 path="/login"
-                element={
-                  <Login user={user} setUser={setUser} />
-                }
+                element={<Login user={user} setUser={setUser} />}
               />
             </Routes>
           </main>

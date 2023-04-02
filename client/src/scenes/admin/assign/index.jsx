@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Box, Typography, useTheme, Button, TextField } from "@mui/material";
+import { Box, Typography, useTheme, Button, TextField, useRadioGroup, Checkbox } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
@@ -10,7 +10,7 @@ import { Formik, Form, useField } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
-const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
+const Assign = ({ employees, projects, selectEmployees, addNewProject, user }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
@@ -19,7 +19,7 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
     description: "",
     completed: false,
     employee_id: selectEmployees[0].id,
-    admin_id: 1,
+    admin_id: user.id
   });
 
   // function handleChange(event) {
@@ -28,16 +28,8 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject }) => {
   //     [event.target.name]: event.target.value,
   //   });
   // }
-// console.log(values)
+console.log(selectEmployees)
   function handleFormSubmit(values, { resetForm }) {
-    // const newProjectValues = selectEmployees.map((employee) => ({
-    //   name: values.name,
-    //   description: values.description,
-    //   completed: false,
-    //   employee_id: employee.id,
-    //   admin_id: 1,
-    // }));
-    // console.log(newProjectValues);
     fetch(`/projects`, {
       method: "POST",
       headers: {

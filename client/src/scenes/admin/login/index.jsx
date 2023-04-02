@@ -11,8 +11,10 @@ import Typography from "@mui/material/Typography";
 import { Container } from "@mui/material";
 import image from ".//loginPic.png";
 import Header from "../../../components/Header";
+import { useNavigate } from "react-router-dom";
 
 const Login = ({ user, setUser }) => {
+  const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -31,6 +33,7 @@ const Login = ({ user, setUser }) => {
       .then((data) => {
         console.log(data);
         setUser(data);
+        navigate("/admin")
       });
   };
   

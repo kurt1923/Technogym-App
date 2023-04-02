@@ -6,15 +6,28 @@ import { useState, useEffect } from "react";
 import { useNavigate, Routes, Route } from "react-router-dom";
 
 const Projects = ({
+  employees,
   projects,
   handleDeleteProject,
   selectProjects,
   setSelectProjects,
+  rowSelectionModel,
+  setRowSelectionModel,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const complete = projects.completed ? "Complete" : "Ongoing";
-  const [rowSelectionModel, setRowSelectionModel] = useState([]);
+  // const complete = projects.map((project) => {
+  //    return project.completed === true ? "complete" : "ongoing";
+  //   });
+  const complete = (params) => {
+    return params.completed ? "complete" : "ongoing";
+  };
+  // return params.completed ? "complete" : "ongoing";
+  
+  // completedProjects = employees.map((employee) => {
+  //   return employee.projects.filter((project) => project.completed === true)
+  //     .length;
+  // });
   const navigate = useNavigate();
   const columns = [
     {
@@ -30,11 +43,33 @@ const Projects = ({
       cellClassName: "name-column--cell",
     },
     {
-      field: "completed",
+      field: "employee_id",
+      headerName: "Assigned To",
+      flex: 1,
+      // renderCell: (params) => (
+      //   <Typography color={colors.primary[900]}>
+      //     {complete[params.row.id - 1]}
+      //   </Typography>
+      // ),
+    },
+    {
+      field: "admin_id",
+      headerName: "Assigned By",
+      flex: 1,
+      // renderCell: (params) => (
+      //   <Typography color={colors.primary[900]}>
+      //     {completedProjects[params.row.id - 1]}
+      //   </Typography>
+      // ),
+    },
+    {
+      field: "complete",
       headerName: "Completed",
       flex: 1,
-      renderCell: () => (
-        <Typography color={colors.primary[900]}>{complete}</Typography>
+      renderCell: (params) => (
+        <Typography color={colors.primary[900]}>
+          {complete([params.row])}
+        </Typography>
       ),
     },
     {
@@ -52,11 +87,13 @@ const Projects = ({
     setSelectProjects([]);
   }
 
-  function handleSelectProjects() {
+  function handleSelectProjects(rowSelectionModel) {
     const selectedProjects = projects.filter((project) => {
       return rowSelectionModel.includes(project.id);
     });
-    setSelectProjects(selectedProjects);
+    rowSelectionModel.length === 0
+    ? setSelectProjects([])
+    : setSelectProjects(selectedProjects);
   }
 
   function navToEdit() {
@@ -64,13 +101,14 @@ const Projects = ({
   }
 
   console.log(selectProjects);
+  console.log(rowSelectionModel)
 
   return (
     <Box m="20px">
       <Header title="PROJECTS" subtitle="List of TAPS Projects" />
       <Box
         m="40px 0 0 0"
-        height="75vh"
+        height="70vh"
         border={2}
         borderColor={colors.grey[900]}
         borderRadius={2}
@@ -108,9 +146,10 @@ const Projects = ({
         }}
       >
         <DataGrid
-          checkboxSelection
+          checkboxSelection={true}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
+            handleSelectProjects(newRowSelectionModel)
           }}
           rowSelectionModel={rowSelectionModel}
           {...projects}
@@ -119,11 +158,10 @@ const Projects = ({
           components={{ Toolbar: GridToolbar }}
         />
       </Box>
-
       {selectProjects.length === 0 ? (
         <Box display="flex" justifyContent="end" mt="20px">
           <Button
-            onClick={handleSelectProjects}
+            onClick={() => {alert ("Select a Project By Clicking the Checkbox")}}
             type="submit"
             sx={{
               backgroundColor: colors.blueAccent[300],
