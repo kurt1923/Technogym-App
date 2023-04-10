@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Box, Typography, useTheme, Button, TextField, useRadioGroup, Checkbox } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
@@ -9,11 +9,13 @@ import Header from "../../../components/Header";
 import { Formik, Form, useField } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useNavigate } from "react-router-dom";
 
 const Assign = ({ employees, projects, selectEmployees, addNewProject, user }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState({
     name: "",
     description: "",
@@ -42,6 +44,7 @@ console.log(selectEmployees)
         addNewProject(data);
         alert(`Project ${values.name} Added`);
         resetForm();
+        navigate("/admin/team");
       });
   }
   console.log(selectEmployees[0]);

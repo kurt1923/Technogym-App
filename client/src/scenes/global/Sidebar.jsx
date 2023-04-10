@@ -39,6 +39,25 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
+// const Logout = ({ title, to, icon, }) => {
+//   const theme = useTheme();
+//   const colors = tokens(theme.palette.mode);
+//   return (
+//     <MenuItem
+      
+//       style={{
+//         color: colors.grey[100],
+//         margin: "6px 0px 6px 0px",
+//       }}
+//       icon={icon}
+//     >
+//       <Typography>{title}</Typography>
+//       <Link to={to} />
+//     </MenuItem>
+//   );
+// };
+
+
 const Sidebar = ({ user, handleLogoutClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -55,6 +74,7 @@ const Sidebar = ({ user, handleLogoutClick }) => {
           backgroundColor: "transparent !important",
         },
         "& .pro-inner-item": {
+          color: `${colors.grey[100]} !important`,
           padding: "5px 35px 5px 20px !important",
         },
         "& .pro-inner-item:hover": {
@@ -62,6 +82,9 @@ const Sidebar = ({ user, handleLogoutClick }) => {
         },
         "& .pro-menu-item.active": {
           color: "#109FFF !important",
+        },
+        "&pro-item-content": {
+          color: `${colors.grey[100]} !important`,
         },
       }}
     >
@@ -141,16 +164,9 @@ const Sidebar = ({ user, handleLogoutClick }) => {
               selected={selected}
               setSelected={setSelected}
             />
-            {/* <Typography
-              variant="h6"
-              color={colors.grey[300]}
-              sx={{ m: "15px 0 5px 20px" }}
-            >
-              Pages
-            </Typography> */}
             <SubMenu
               title="Firefighters"
-              color={colors.grey[300]}
+              color={colors.grey[100]}
               icon={<LocalFireDepartmentIcon />}
               style={{
                 color: colors.grey[100],
@@ -159,21 +175,21 @@ const Sidebar = ({ user, handleLogoutClick }) => {
             >
               {" "}
               <Item
-                title="CAT 1"
+                title="Under Construction"
                 to="/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="CAT 2"
+                title="Under Construction"
                 to="/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="CAT 2"
+                title="Under Construction"
                 to="/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
@@ -182,7 +198,7 @@ const Sidebar = ({ user, handleLogoutClick }) => {
             </SubMenu>
             <SubMenu
               title="Police"
-              color={colors.grey[300]}
+              color={colors.grey[100]}
               icon={<LocalPoliceIcon />}
               style={{
                 color: colors.grey[100],
@@ -190,21 +206,21 @@ const Sidebar = ({ user, handleLogoutClick }) => {
               }}
             >
               <Item
-                title="CAT 1"
+                title="Under Construction"
                 to="/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="CAT 2"
+                title="Under Construction"
                 to="/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="CAT 2"
+                title="Under Construction"
                 to="/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
@@ -214,7 +230,7 @@ const Sidebar = ({ user, handleLogoutClick }) => {
 
             <SubMenu
               title="Military"
-              color={colors.grey[300]}
+              color={colors.grey[100]}
               icon={<MilitaryTechIcon />}
               style={{
                 color: colors.grey[100],
@@ -222,21 +238,21 @@ const Sidebar = ({ user, handleLogoutClick }) => {
               }}
             >
               <Item
-                title="CAT 1"
+                title="Under Construction"
                 to="/bar"
                 icon={<BarChartOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="CAT 2"
+                title="Under Construction"
                 to="/pie"
                 icon={<PieChartOutlineOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
               />
               <Item
-                title="CAT 2"
+                title="Under Construction"
                 to="/line"
                 icon={<TimelineOutlinedIcon />}
                 selected={selected}
@@ -245,18 +261,13 @@ const Sidebar = ({ user, handleLogoutClick }) => {
             </SubMenu>
             <SubMenu
               title="Admin"
-              color={colors.grey[300]}
+              color={colors.grey[100]}
               icon={<ContactsOutlinedIcon />}
               style={{
                 color: colors.grey[100],
                 fontSize: "1.2rem",
               }}
             >
-              {/* <Typography
-                variant="h6"
-                color={colors.grey[300]}
-                sx={{ m: "15px 0 5px 20px" }}
-              ></Typography> */}
               <Item
                 title="Dashboard"
                 to="/admin"
@@ -295,13 +306,14 @@ const Sidebar = ({ user, handleLogoutClick }) => {
             </SubMenu>
             <SubMenu
               title="Account"
-              color={colors.grey[300]}
+              color={colors.grey[100]}
               icon={<PeopleOutlinedIcon />}
               style={{
                 color: colors.grey[100],
                 fontSize: "1.2rem",
               }}
             >
+              {user === null ? (
               <Item
                 title="Login"
                 to="/login"
@@ -309,25 +321,26 @@ const Sidebar = ({ user, handleLogoutClick }) => {
                 selected={selected}
                 setSelected={setSelected}
               />
-              <Item
+              ) : (
+              <MenuItem
                 title="Logout"
-                icon={<MapOutlinedIcon />}
-                onClick={handleLogoutClick}
-              />
-              <Item
-                title="Create Account"
                 to="/login"
                 icon={<MapOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
+                onClick={handleLogoutClick}
+                style={{
+                  margin: "10px 0 20px 0",
+                  color: colors.grey[100],
+                }}
+              >Logout
+              </MenuItem>
+              )}
+              {/* <Item
                 title="Calendar"
                 to="/calendar"
                 icon={<CalendarTodayOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
-              />
+              /> */}
             </SubMenu>
           </Box>
         </Menu>

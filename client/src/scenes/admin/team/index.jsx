@@ -20,14 +20,7 @@ const Team = ({
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  const ongoingProjects = employees.map((employee) => {
-    return employee.projects.filter((project) => project.completed === false)
-      .length;
-  });
-  const completedProjects = employees.map((employee) => {
-    return employee.projects.filter((project) => project.completed === true)
-      .length;
-  });
+
   function handleSelectEmployees(rowSelectionModel) {
     const selectedEmployees = employees.filter((employee) => {
       return rowSelectionModel.includes(employee.id);
@@ -44,6 +37,7 @@ const Team = ({
       method: "DELETE",
     });
     handleDeleteEmployee(selectEmployees[0].id);
+    alert(`Employee ${selectEmployees[0].firstname} ${selectEmployees[0].lastname} Deleted`);
     setSelectEmployees([]);
   }
 
@@ -58,32 +52,27 @@ const Team = ({
       cellClassName: "name-column--cell",
     },
     {
+      field: "img",
+      headerName: "Image",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: (params) => <img src={params.value} />,
+    },
+    {
       field: "lastname",
       headerName: "Name",
       flex: 1,
       cellClassName: "name-column--cell",
     },
     {
-      field: "completed",
+      field: "completedProjects",
       headerName: "Completed",
       flex: 1,
-      //return employee.projects.length
-      renderCell: (params) => (
-        <Typography color={colors.primary[900]}>
-          {completedProjects[params.row.id - 1]}
-        </Typography>
-      ),
     },
     {
-      field: "projects",
+      field: "incompleteProjects",
       headerName: "Working On",
       flex: 1,
-      //return employee.projects.length
-      renderCell: (params) => (
-        <Typography color={colors.primary[900]}>
-          {ongoingProjects[params.row.id - 1]}
-        </Typography>
-      ),
     },
     {
       field: "title",
@@ -93,7 +82,7 @@ const Team = ({
       renderCell: ({ row: { title } }) => {
         return (
           <Box
-            width="60%"
+            width="80%"
             m="0 auto"
             p="5px"
             display="flex"
@@ -164,6 +153,12 @@ const Team = ({
             backgroundColor: colors.grey[700],
             border: "none",
           },
+          "img": {
+            width: "5vwv",
+            height: "5vw",
+            borderRadius: "90%",
+            border: "2px solid #fff",
+          }
         }}
       >
         <DataGrid

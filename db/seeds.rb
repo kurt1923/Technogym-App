@@ -1,3 +1,5 @@
+require 'faker'
+
 puts "🌱  spices..."
 
 Employee.destroy_all
@@ -42,115 +44,31 @@ Admin.create([
 
 puts "🌱  seeds...admins"
 
+30.times do
+    Employee.create(
+        firstname: Faker::Name.first_name,
+        lastname: Faker::Name.last_name,
+        email: Faker::Internet.email,
+        password: Faker::Internet.password,
+        title: Faker::Job.title,
+        phone: Faker::PhoneNumber.cell_phone,
+        address: Faker::Address.full_address,
+        img: Faker::Avatar.image,
+    )
+end
 
+puts "🌱  seeds...employees"
 
-Employee.create([
-    {
-        firstname: "John",
-        lastname: "Doe",
-        email: "1111",
-        password: "1111",
-        title: "employee",
-        phone: "123456789",
-        address: "1234 Main St",
-        img: "https://i.imgur.com/1J8ZQYt.jpg",
-    },
-    {
-        firstname: "Jane",
-        lastname: "Doe",
-        email: "2222",
-        password: "2222",
-        title: "employee",
-        phone: "123456789",
-        address: "1234 Main St",
-        img: "https://i.imgur.com/1J8ZQYt.jpg",
-    },
-    {
-        firstname: "John",
-        lastname: "Doesss",
-        email: "3333",
-        password: "3333",
-        title: "employee",
-        phone: "123456789",
-        address: "1234 Main St",
-        img: "https://i.imgur.com/1J8ZQYt.jpg"
-    },
-    {
-        firstname: "John",
-        lastname: "Doe",
-        email: "1111",
-        password: "1111",
-        title: "employee",
-        phone: "123456789",
-        address: "1234 Main St",
-        img: "https://i.imgur.com/1J8ZQYt.jpg"
-    },
-    {
-        firstname: "Jane",
-        lastname: "Doe",
-        email: "2222",
-        password: "2222",
-        title: "employee",
-        phone: "123456789",
-        address: "1234 Main St",
-        img: "https://i.imgur.com/1J8ZQYt.jpg"
-    },
-    {
-        firstname: "John",
-        lastname: "Doesss",
-        email: "3333",
-        password: "3333",
-        title: "employee",
-        phone: "123456789",
-        address: "1234 Main St",
-        img: "https://i.imgur.com/1J8ZQYt.jpg"
-    }
-])
+30.times do
+    Project.create(
+        name: Faker::Company.name,
+        description: Faker::Lorem.paragraph,
+        completed: Faker::Boolean.boolean,
+        admin_id: Admin.all.sample.id,
+        employee_id: Employee.all.sample.id
+    )
+end
 
-Project.create([
-    {
-        name: "Kitchen",
-        description: "Kitchen",
-        completed: false,
-        admin_id: 1,
-        employee_id: 1
-    },
-    {
-        name: "Bathroom",
-        description: "Bathroom",
-        completed: false,
-        admin_id: 2,
-        employee_id: 1
-    },
-    {
-        name: "Bedroom",
-        description: "Bedroom",
-        completed: false,
-        admin_id: 3,
-        employee_id: 3
-    },
-    {
-        name: "Living Room",
-        description: "Living Room",
-        completed: false,
-        admin_id: 4,
-        employee_id: 4
-    },
-    {
-        name: "Basement",
-        description: "Basement",
-        completed: false,
-        admin_id: 5,
-        employee_id: 5
-    },
-    {
-        name: "Garage",
-        description: "Garage",
-        completed: false,
-        admin_id: 6,
-        employee_id: 6
-    }
-])
 
 puts "🌱  seeds...projects"
 

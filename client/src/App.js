@@ -47,7 +47,7 @@ function App() {
     fetch("/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data));
-  }, []);
+  }, [projects]);
 
   useEffect(() => {
     fetch("/projects")
@@ -142,6 +142,7 @@ function App() {
                     employees={employees}
                     rowSelectionModel={rowSelectionModel}
                     setRowSelectionModel={setRowSelectionModel}
+                    admin={admin}
                   />
                 }
               />

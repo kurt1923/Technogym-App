@@ -5,11 +5,13 @@ import Header from "../../../components/Header";
 import { Formik, Form, useField } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useNavigate } from "react-router-dom";
 
 const AddEmployee = ({ handleUpdateEmployees }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const navigate = useNavigate();
   const initialValues = {
     firstname: "",
     lastname: "",
@@ -33,6 +35,7 @@ const AddEmployee = ({ handleUpdateEmployees }) => {
       .then((data) => {
         handleUpdateEmployees(data);
         alert(`Employee ${values.firstname} ${values.lastname} Added`);
+        navigate("/admin/team");
       });
   }
 

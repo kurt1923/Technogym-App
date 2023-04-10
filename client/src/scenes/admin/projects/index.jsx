@@ -13,21 +13,33 @@ const Projects = ({
   setSelectProjects,
   rowSelectionModel,
   setRowSelectionModel,
+  admin,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  // const complete = projects.map((project) => {
-  //    return project.completed === true ? "complete" : "ongoing";
-  //   });
+
   const complete = (params) => {
-    return params.completed ? "complete" : "ongoing";
+    return params.row.completed ? "Completed" : "Ongoing";
   };
-  // return params.completed ? "complete" : "ongoing";
-  
-  // completedProjects = employees.map((employee) => {
-  //   return employee.projects.filter((project) => project.completed === true)
-  //     .length;
-  // });
+  const getEmployeeIdName = (params) => {
+    const findEmp = employees.filter((employee) => {
+      return employee.id === params.row.employee_id;
+    });
+    return findEmp[0].firstname + " " + findEmp[0].lastname;
+  };
+  const getAdminIdName = (params) => {
+    const findAdmin = admin.filter((a) => {
+      return a.id === params.row.admin_id;
+    });
+    return findAdmin[0].firstname + " " + findAdmin[0].lastname;
+  };
+
+  const createDate = (params) => {
+    const date = new Date(params.row.created_at);
+    return date.toDateString();
+  };
+
+
   const navigate = useNavigate();
   const columns = [
     {
@@ -43,39 +55,26 @@ const Projects = ({
       cellClassName: "name-column--cell",
     },
     {
-      field: "employee_id",
+      field: "employeeName",
       headerName: "Assigned To",
       flex: 1,
-      // renderCell: (params) => (
-      //   <Typography color={colors.primary[900]}>
-      //     {complete[params.row.id - 1]}
-      //   </Typography>
-      // ),
     },
     {
-      field: "admin_id",
+      field: "adminName",
       headerName: "Assigned By",
       flex: 1,
-      // renderCell: (params) => (
-      //   <Typography color={colors.primary[900]}>
-      //     {completedProjects[params.row.id - 1]}
-      //   </Typography>
-      // ),
     },
     {
-      field: "complete",
+      field: "completed",
       headerName: "Completed",
       flex: 1,
-      renderCell: (params) => (
-        <Typography color={colors.primary[900]}>
-          {complete([params.row])}
-        </Typography>
-      ),
+      valueGetter: complete,
     },
     {
       field: "created_at",
       headerName: "Date",
       flex: 1,
+      valueGetter: createDate,
     },
   ];
 
