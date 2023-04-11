@@ -33,7 +33,7 @@ function App() {
       }
     });
   }, []);
-  
+
   function handleLogoutClick() {
     fetch("/logout", { method: "DELETE" }).then((r) => {
       if (r.ok) {
@@ -97,11 +97,27 @@ function App() {
       <ThemeProvider theme={theme}>
         <CssBaseline />
         <div className="app">
-          <Sidebar isSidebar={isSidebar} user={user} handleLogoutClick={handleLogoutClick} />
+          <Sidebar
+            isSidebar={isSidebar}
+            user={user}
+            handleLogoutClick={handleLogoutClick}
+          />
           <main className="content">
-            <Topbar setIsSidebar={setIsSidebar} handleLogoutClick={handleLogoutClick} />
+            <Topbar
+              setIsSidebar={setIsSidebar}
+              handleLogoutClick={handleLogoutClick}
+            />
             <Routes>
-              <Route path="/admin" element={<AdminDashboard user={user} />} />
+              <Route
+                path="/admin"
+                element={
+                  <AdminDashboard
+                    user={user}
+                    projects={projects}
+                    employees={employees}
+                  />
+                }
+              />
               <Route
                 path="/admin/team"
                 element={

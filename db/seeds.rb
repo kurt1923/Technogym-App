@@ -50,7 +50,7 @@ puts "🌱  seeds...admins"
         lastname: Faker::Name.last_name,
         email: Faker::Internet.email,
         password: Faker::Internet.password,
-        title: Faker::Job.title,
+        title: (['On Site Tech', 'Data Analyst', 'Marketing', 'Other']).sample,
         phone: Faker::PhoneNumber.cell_phone,
         address: Faker::Address.full_address,
         img: Faker::Avatar.image,
@@ -61,11 +61,12 @@ puts "🌱  seeds...employees"
 
 30.times do
     Project.create(
-        name: Faker::Company.name,
+        name: Faker::Company.catch_phrase,
         description: Faker::Lorem.paragraph,
         completed: Faker::Boolean.boolean,
         admin_id: Admin.all.sample.id,
-        employee_id: Employee.all.sample.id
+        employee_id: Employee.all.sample.id,
+        category: (['Fire', 'Police', 'Military', 'Testing', 'Marketing', 'Other']).sample,
     )
 end
 

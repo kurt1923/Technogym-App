@@ -55,6 +55,11 @@ const Projects = ({
       cellClassName: "name-column--cell",
     },
     {
+      field: "category",
+      headerName: "Category",
+      flex: 1,
+    },
+    {
       field: "employeeName",
       headerName: "Assigned To",
       flex: 1,

@@ -39,25 +39,6 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-// const Logout = ({ title, to, icon, }) => {
-//   const theme = useTheme();
-//   const colors = tokens(theme.palette.mode);
-//   return (
-//     <MenuItem
-      
-//       style={{
-//         color: colors.grey[100],
-//         margin: "6px 0px 6px 0px",
-//       }}
-//       icon={icon}
-//     >
-//       <Typography>{title}</Typography>
-//       <Link to={to} />
-//     </MenuItem>
-//   );
-// };
-
-
 const Sidebar = ({ user, handleLogoutClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

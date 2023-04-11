@@ -45,6 +45,7 @@ ActiveRecord::Schema.define(version: 2023_03_15_190013) do
     t.boolean "completed"
     t.integer "admin_id"
     t.integer "employee_id"
+    t.string "category"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

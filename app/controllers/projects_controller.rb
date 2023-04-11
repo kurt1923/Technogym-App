@@ -33,7 +33,7 @@ class ProjectsController < ApplicationController
     private
 
     def project_params
-        params.permit(:name, :description, :completed, :admin_id, :employee_id)
+        params.permit(:name, :description, :completed, :admin_id, :employee_id, :category)
     end
 
     def find_project

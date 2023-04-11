@@ -6,6 +6,7 @@ class CreateProjects < ActiveRecord::Migration[6.1]
       t.boolean :completed
       t.integer :admin_id
       t.integer :employee_id
+      t.string :category
 
       t.timestamps
     end

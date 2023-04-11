@@ -1,5 +1,5 @@
 class ProjectSerializer < ActiveModel::Serializer
-  attributes :id, :name, :description, :employee_id, :created_at, :updated_at, :adminName, :admin_id, :completed, :employee_id, :employeeName 
+  attributes :id, :name, :description, :employee_id, :category, :created_at, :updated_at, :adminName, :admin_id, :completed, :employee_id, :employeeName 
 
   def adminName
     object.admin.firstname + " " + object.admin.lastname

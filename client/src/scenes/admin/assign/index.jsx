@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { Box, Typography, useTheme, Button, TextField, useRadioGroup, Checkbox } from "@mui/material";
+import { Box, Typography, useTheme, Button, TextField, Select, MenuItem } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../../components/Header";
-import { Formik, Form, useField } from "formik";
+import { Formik, Form, useField, Field } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
@@ -21,15 +21,10 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject, user }) =
     description: "",
     completed: false,
     employee_id: selectEmployees[0].id,
-    admin_id: user.id
+    admin_id: user.id,
+    category: "",
   });
 
-  // function handleChange(event) {
-  //   setInitialValues({
-  //     ...initialValues,
-  //     [event.target.name]: event.target.value,
-  //   });
-  // }
 console.log(selectEmployees)
   function handleFormSubmit(values, { resetForm }) {
     fetch(`/projects`, {
@@ -185,9 +180,6 @@ console.log(selectEmployees)
                 },
                 "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
               }}
-              // sx={{
-              //   "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-              // }}
             >
               <TextField
                 fullWidth
@@ -218,6 +210,23 @@ console.log(selectEmployees)
                 helperText={touched.description && errors.description}
                 sx={{ gridColumn: "span 2" }}
               />
+              <Select
+                name="category"
+                label="Category"
+                placeholder="Category"
+                onChange={handleChange}
+                onBlur={handleBlur}
+                value={values.category}
+                error={!!touched.category && !!errors.category}
+                helperText={touched.category && errors.category}
+               >
+                <MenuItem value="Fire">Fire</MenuItem>
+                <MenuItem value="Police">Police</MenuItem>
+                <MenuItem value="Military">Military</MenuItem>
+                <MenuItem value="Marketing">Marketing</MenuItem>
+                <MenuItem value="Testing">Testing</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </Select>
               <Box display="flex" justifyContent="center" m="10px" p="10px">
                 <Button type="submit" sx={{ backgroundColor: colors.blueAccent[300] }} variant="contained">
                   Submit Project
