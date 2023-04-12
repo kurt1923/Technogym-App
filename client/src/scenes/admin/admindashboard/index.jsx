@@ -9,7 +9,7 @@ import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 
 
 
-const AdminDashboard = ({ user, projects, employees }) => {
+const AdminDashboard = ({ user, projects, employees, admin }) => {
     const theme = useTheme();
     const colors = tokens(theme.palette.mode);
     const employeesWithProjects = employees.filter((employee) => {
@@ -18,11 +18,17 @@ const AdminDashboard = ({ user, projects, employees }) => {
     const projectsCompleted = projects.filter((project) => {
       return project.completed === true;
     });
-    const projectsOngoing = projects.filter((project) => {
-      return project.completed === false;
+
+    const userAssigned = projects.filter((project) => {
+      return project.admin_id === user.id;
     });
 
-console.log(employeesWithProjects)
+    const userAssignedCompleted = projects.filter((project) => {
+      return project.admin_id === user.id && project.completed === true;
+    });
+ 
+
+
     return (
       <Box m="20px">
       {/* {user === null ?          */}
@@ -69,7 +75,7 @@ console.log(employeesWithProjects)
             title={employees.length + " Employees"}
             subtitle="Assigned"
             progress={employeesWithProjects.length / employees.length}
-            increase={(employeesWithProjects.length / employees.length).toFixed(3) * 100 + "%"}
+            increase={(employeesWithProjects.length / employees.length).toFixed(2) * 100 + "%"}
             icon={
               <PersonAddIcon
                 sx={{ color: colors.grey[100], fontSize: "26px" }}
@@ -88,7 +94,7 @@ console.log(employeesWithProjects)
             title={projects.length + " Projects"}
             subtitle={projectsCompleted.length + " Completed"}
             progress={projectsCompleted.length / projects.length}
-            increase={(projectsCompleted.length / projects.length).toFixed(3) * 100 + "%"}
+            increase={(projectsCompleted.length / projects.length).toFixed(2) * 100 + "%"}
             icon={
               <ReceiptOutlinedIcon
                 sx={{ color: colors.grey[100], fontSize: "26px" }}
@@ -104,10 +110,10 @@ console.log(employeesWithProjects)
           justifyContent="center"
         >
           <StatBox
-            title="32,441"
-            subtitle="New Clients"
-            progress="0.90"
-            increase="+35%"
+            title={userAssigned.length + ` ${user.lastname} Projects`}
+            subtitle="Completed"
+            progress={userAssignedCompleted.length / userAssigned.length}
+            increase={(userAssignedCompleted.length / userAssigned.length).toFixed(2) * 100 + "%"}
             icon={
               <PersonAddIcon
                 sx={{ color: colors.grey[100], fontSize: "26px" }}
@@ -123,7 +129,7 @@ console.log(employeesWithProjects)
           justifyContent="center"
         >
           <StatBox
-            title="1,325,134"
+            title="My Employees"
             subtitle="Traffic Received"
             progress="0.80"
             increase="+43%"

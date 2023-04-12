@@ -13,6 +13,7 @@ import Assign from "./scenes/admin/assign";
 import EditProject from "./scenes/admin/editProject";
 import Login from "./scenes/admin/login";
 import AdminDashboard from "./scenes/admin/admindashboard";
+import Home from "./scenes/tapspages/Home";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -38,9 +39,9 @@ function App() {
     fetch("/logout", { method: "DELETE" }).then((r) => {
       if (r.ok) {
         setUser(null);
-        navigate("/login");
       }
     });
+    navigate("/login");
   }
 
   useEffect(() => {
@@ -109,12 +110,19 @@ function App() {
             />
             <Routes>
               <Route
+                path="/"
+                element={
+                  <Home/>
+                }
+              />
+              <Route
                 path="/admin"
                 element={
                   <AdminDashboard
                     user={user}
                     projects={projects}
                     employees={employees}
+                    admin={admin}
                   />
                 }
               />

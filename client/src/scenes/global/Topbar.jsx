@@ -8,11 +8,18 @@ import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
+import { useNavigate } from "react-router-dom";
 
 const Topbar = ({ handleLogoutClick }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const navigate = useNavigate();
+
+  function home () {
+    navigate("/")
+  }
 
   return (
     <Box display="flex" justifyContent="right" p={2} backgroundColor= {colors.primary[500]} zIndex ={2} >
@@ -38,8 +45,8 @@ const Topbar = ({ handleLogoutClick }) => {
         <IconButton>
           <NotificationsOutlinedIcon />
         </IconButton>
-        <IconButton>
-          <SettingsOutlinedIcon />
+        <IconButton onClick = {home}>
+          <HomeOutlinedIcon />
         </IconButton>
         <IconButton onClick={handleLogoutClick}>
           <PersonOutlinedIcon />

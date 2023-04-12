@@ -19,20 +19,24 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+// import Vermillion from "./adminpics/Vermillion.jpg"
+
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+
+  
   return (
     <MenuItem
-      active={selected === title}
-      style={{
+    active={selected === title}
+    style={{
         color: colors.grey[100],
         margin: "6px 0px 6px 0px",
       }}
       onClick={() => setSelected(title)}
       icon={icon}
-    >
+      >
       <Typography>{title}</Typography>
       <Link to={to} />
     </MenuItem>
@@ -44,7 +48,22 @@ const Sidebar = ({ user, handleLogoutClick }) => {
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
+  const adminPic = () => {
+    if (user === null) {
+      return "./adminpics/TAPS.jpg" 
+    }
+    if (user.lastname === "Vermillion") {
+      return "./adminpics/Vermillion.jpg"
+    }
+    if (user.lastname === "Purvis") {
+      return "./adminpics/Purvis.jpg"
+    }
+    if (user.lastname === "Meadows") {
+      return "./adminpics/Meadows.jpg"
+    }
+  }
 
+  
   return (
     <Box
       sx={{
@@ -104,7 +123,7 @@ const Sidebar = ({ user, handleLogoutClick }) => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src="https://imgur.com/a/Yvh5edr"
+                  src= {adminPic()}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
