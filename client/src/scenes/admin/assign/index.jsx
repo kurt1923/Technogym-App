@@ -1,4 +1,3 @@
-import React, { useState } from "react";
 import { Box, Typography, useTheme, Button, TextField, Select, MenuItem } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
@@ -6,7 +5,7 @@ import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettin
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../../components/Header";
-import { Formik, Form, useField, Field } from "formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
@@ -16,14 +15,14 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject, user }) =
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
-  const [initialValues, setInitialValues] = useState({
+  const initialValues ={
     name: "",
     description: "",
     completed: false,
     employee_id: selectEmployees[0].id,
     admin_id: user.id,
     category: "",
-  });
+  };
 
 console.log(selectEmployees)
   function handleFormSubmit(values, { resetForm }) {

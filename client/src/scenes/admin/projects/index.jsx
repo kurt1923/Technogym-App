@@ -1,9 +1,8 @@
-import { Box, Typography, useTheme, Button } from "@mui/material";
+import { Box,  useTheme, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import { useState, useEffect } from "react";
-import { useNavigate, Routes, Route } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Projects = ({
   employees,

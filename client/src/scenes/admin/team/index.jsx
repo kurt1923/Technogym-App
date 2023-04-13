@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Box, Typography, useTheme, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
@@ -16,10 +15,12 @@ const Team = ({
   selectEmployees,
   setSelectEmployees,
   handleDeleteEmployee,
+  user
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  console.log(user)
 
   function handleSelectEmployees(rowSelectionModel) {
     const selectedEmployees = employees.filter((employee) => {
@@ -36,9 +37,9 @@ const Team = ({
     fetch(`/employees/${selectEmployees[0].id}`, {
       method: "DELETE",
     });
-    handleDeleteEmployee(selectEmployees[0].id);
     alert(`Employee ${selectEmployees[0].firstname} ${selectEmployees[0].lastname} Deleted`);
     setSelectEmployees([]);
+    handleDeleteEmployee(selectEmployees[0].id);
   }
 
   console.log(rowSelectionModel);
@@ -56,7 +57,7 @@ const Team = ({
       headerName: "Image",
       flex: 1,
       cellClassName: "name-column--cell",
-      renderCell: (params) => <img src={params.value} />,
+      renderCell: (params) => <img src={params.value} alt = "employee" width="50px" height="50px" />
     },
     {
       field: "lastname",

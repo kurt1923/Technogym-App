@@ -44,7 +44,7 @@ Admin.create([
 
 puts "🌱  seeds...admins"
 
-30.times do
+25.times do
     Employee.create(
         firstname: Faker::Name.first_name,
         lastname: Faker::Name.last_name,
@@ -59,7 +59,7 @@ end
 
 puts "🌱  seeds...employees"
 
-30.times do
+45.times do
     Project.create(
         name: Faker::Company.catch_phrase,
         description: Faker::Lorem.paragraph,
@@ -67,6 +67,7 @@ puts "🌱  seeds...employees"
         admin_id: Admin.all.sample.id,
         employee_id: Employee.all.sample.id,
         category: (['Fire', 'Police', 'Military', 'Testing', 'Marketing', 'Other']).sample,
+        created_at: Faker::Date.between(from: 2.month.ago, to: Date.today),
     )
 end
 

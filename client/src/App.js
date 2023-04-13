@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { ColorModeContext, useMode } from "./theme";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { Routes, Route, useNavigate } from "react-router-dom";
-// import Dashboard from "./scenes/dashboard";
 import Team from "./scenes/admin/team";
 import Contacts from "./scenes/contacts";
 import Projects from "./scenes/admin/projects";
@@ -14,6 +13,7 @@ import EditProject from "./scenes/admin/editProject";
 import Login from "./scenes/admin/login";
 import AdminDashboard from "./scenes/admin/admindashboard";
 import Home from "./scenes/tapspages/Home";
+
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -48,13 +48,13 @@ function App() {
     fetch("/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data));
-  }, [projects]);
+  }, []);
 
   useEffect(() => {
     fetch("/projects")
       .then((res) => res.json())
       .then((data) => setProjects(data));
-  }, []);
+  }, [employees]);
 
   useEffect(() => {
     fetch("/admins")
@@ -76,12 +76,11 @@ function App() {
     setProjects(updatedProjects);
   }
 
-  function handleUpdateEmployees(patchedEmployee) {
-    const updatedEmployees = employees.map((employee) =>
-      employee.id === patchedEmployee.id ? patchedEmployee : employee
-    );
+  function handleAddEmployee(newEmployee) {
+    const updatedEmployees = [...employees, newEmployee];
     setEmployees(updatedEmployees);
   }
+    
 
   function handleDeleteProject(id) {
     const updatedProjects = projects.filter((project) => project.id !== id);
@@ -93,6 +92,21 @@ function App() {
     setEmployees(updatedEmployees);
   }
 
+  const adminPic = () => {
+    if (user === null) {
+      return "./adminpics/TAPS.jpg";
+    }
+    if (user.lastname === "Vermillion") {
+      return "./adminpics/Vermillion.jpg";
+    }
+    if (user.lastname === "Purvis") {
+      return "./adminpics/Purvis.jpg";
+    }
+    if (user.lastname === "Meadows") {
+      return "./adminpics/Meadows.jpg";
+    }
+  };
+
   return (
     <ColorModeContext.Provider value={colorMode}>
       <ThemeProvider theme={theme}>
@@ -102,11 +116,13 @@ function App() {
             isSidebar={isSidebar}
             user={user}
             handleLogoutClick={handleLogoutClick}
+            adminPic={adminPic}
           />
           <main className="content">
             <Topbar
               setIsSidebar={setIsSidebar}
               handleLogoutClick={handleLogoutClick}
+              user={user}
             />
             <Routes>
               <Route
@@ -115,6 +131,8 @@ function App() {
                   <Home/>
                 }
               />
+              {user !== null ? (
+              <>
               <Route
                 path="/admin"
                 element={
@@ -137,6 +155,7 @@ function App() {
                     rowSelectionModel={rowSelectionModel}
                     setRowSelectionModel={setRowSelectionModel}
                     handleDeleteEmployee={handleDeleteEmployee}
+                    user={user}
                   />
                 }
               />
@@ -183,9 +202,11 @@ function App() {
               <Route
                 path="/admin/addEmployee"
                 element={
-                  <AddEmployee handleUpdateEmployees={handleUpdateEmployees} />
+                  <AddEmployee handleAddEmployee={handleAddEmployee} />
                 }
               />
+              </>
+              ) : null}
               <Route
                 path="/login"
                 element={<Login user={user} setUser={setUser} />}

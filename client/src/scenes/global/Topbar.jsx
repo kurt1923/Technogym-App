@@ -1,4 +1,4 @@
-import { Box, IconButton, useTheme } from "@mui/material";
+import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 // import InputBase from "@mui/material/InputBase";
@@ -6,51 +6,64 @@ import { ColorModeContext, tokens } from "../../theme";
 import LightModeOutlinedIcon from "@mui/icons-material/LightModeOutlined";
 import DarkModeOutlinedIcon from "@mui/icons-material/DarkModeOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
-import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { useNavigate } from "react-router-dom";
 
-const Topbar = ({ handleLogoutClick }) => {
+const Topbar = ({ handleLogoutClick, user }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
   const navigate = useNavigate();
 
-  function home () {
-    navigate("/")
+  function home() {
+    navigate("/");
+  }
+
+  function login() {
+    navigate("/login");
   }
 
   return (
-    <Box display="flex" justifyContent="right" p={2} backgroundColor= {colors.primary[500]} zIndex ={2} >
-      {/* <Box
-        display="flex"
-        backgroundColor={colors.primary[400]}
-        borderRadius="3px"
-      >
-        <InputBase sx={{ ml: 2, flex: 1 }} placeholder="Search..." />
-        <IconButton types="button" sx={{ p: 1 }} aria-label="search">
-          <SearchIcon />
-        </IconButton>
-      </Box> */}
-      {/* icons */}
+    <Box
+      display="flex"
+      justifyContent="right"
+      p={2}
+      backgroundColor={colors.primary[500]}
+      zIndex={2}
+    >
       <Box display="flex">
-        <IconButton onClick={colorMode.toggleColorMode}>
-          {theme.palette.mode === "dark" ? (
-            <DarkModeOutlinedIcon />
-          ) : (
-            <LightModeOutlinedIcon />
-          )}
-        </IconButton>
+        <Tooltip title="Settings">
+          <IconButton onClick={colorMode.toggleColorMode}>
+            {theme.palette.mode === "dark" ? (
+              <DarkModeOutlinedIcon />
+            ) : (
+              <LightModeOutlinedIcon />
+            )}
+          </IconButton>
+        </Tooltip>
         <IconButton>
           <NotificationsOutlinedIcon />
         </IconButton>
-        <IconButton onClick = {home}>
-          <HomeOutlinedIcon />
-        </IconButton>
-        <IconButton onClick={handleLogoutClick}>
-          <PersonOutlinedIcon />
-        </IconButton>
+        <Tooltip title="Home">
+          <IconButton onClick={home}>
+            <HomeOutlinedIcon />
+          </IconButton>
+        </Tooltip>
+
+        {user === null ? (
+          <Tooltip title="Login">
+            <IconButton onClick={login}>
+              <PersonOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        ) : (
+          <Tooltip title="Logout">
+            <IconButton onClick={handleLogoutClick}>
+              <PersonOutlinedIcon />
+            </IconButton>
+          </Tooltip>
+        )}
       </Box>
     </Box>
   );

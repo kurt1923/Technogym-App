@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ProSidebar, Menu, MenuItem, SubMenu } from "react-pro-sidebar";
 import { Box, IconButton, Typography, useTheme } from "@mui/material";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "react-pro-sidebar/dist/css/styles.css";
 import { tokens } from "../../theme";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -9,8 +9,6 @@ import PeopleOutlinedIcon from "@mui/icons-material/PeopleOutlined";
 import ContactsOutlinedIcon from "@mui/icons-material/ContactsOutlined";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
-import CalendarTodayOutlinedIcon from "@mui/icons-material/CalendarTodayOutlined";
-import HelpOutlineOutlinedIcon from "@mui/icons-material/HelpOutlineOutlined";
 import BarChartOutlinedIcon from "@mui/icons-material/BarChartOutlined";
 import PieChartOutlineOutlinedIcon from "@mui/icons-material/PieChartOutlineOutlined";
 import TimelineOutlinedIcon from "@mui/icons-material/TimelineOutlined";
@@ -19,49 +17,34 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
-// import Vermillion from "./adminpics/Vermillion.jpg"
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
 
-  
   return (
     <MenuItem
-    active={selected === title}
-    style={{
+      active={selected === title}
+      style={{
         color: colors.grey[100],
         margin: "6px 0px 6px 0px",
       }}
       onClick={() => setSelected(title)}
       icon={icon}
-      >
+    >
       <Typography>{title}</Typography>
       <Link to={to} />
     </MenuItem>
   );
 };
 
-const Sidebar = ({ user, handleLogoutClick }) => {
+const Sidebar = ({ user, handleLogoutClick, adminPic }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
-  const adminPic = () => {
-    if (user === null) {
-      return "./adminpics/TAPS.jpg" 
-    }
-    if (user.lastname === "Vermillion") {
-      return "./adminpics/Vermillion.jpg"
-    }
-    if (user.lastname === "Purvis") {
-      return "./adminpics/Purvis.jpg"
-    }
-    if (user.lastname === "Meadows") {
-      return "./adminpics/Meadows.jpg"
-    }
-  }
+
 
   
   return (
@@ -123,7 +106,7 @@ const Sidebar = ({ user, handleLogoutClick }) => {
                   alt="profile-user"
                   width="100px"
                   height="100px"
-                  src= {adminPic()}
+                  src={adminPic()}
                   style={{ cursor: "pointer", borderRadius: "50%" }}
                 />
               </Box>
@@ -259,51 +242,54 @@ const Sidebar = ({ user, handleLogoutClick }) => {
                 setSelected={setSelected}
               />
             </SubMenu>
-            <SubMenu
-              title="Admin"
-              color={colors.grey[100]}
-              icon={<ContactsOutlinedIcon />}
-              style={{
-                color: colors.grey[100],
-                fontSize: "1.2rem",
-              }}
-            >
-              <Item
-                title="Dashboard"
-                to="/admin"
-                icon={<HomeOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Manage Team"
-                to="/admin/team"
-                icon={<PeopleOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Projects"
-                to="/admin/projects"
-                icon={<ReceiptOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Add Employee"
-                to="/admin/addEmployee"
-                icon={<PersonOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-              <Item
-                title="Contacts Info"
-                to="/contacts"
+            {user !== null ? (
+              <SubMenu
+                title="Admin"
+                color={colors.grey[100]}
                 icon={<ContactsOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
-            </SubMenu>
+                style={{
+                  color: colors.grey[100],
+                  fontSize: "1.2rem",
+                }}
+              >
+                <Item
+                  title="Dashboard"
+                  to="/admin"
+                  icon={<HomeOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Manage Team"
+                  to="/admin/team"
+                  icon={<PeopleOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Projects"
+                  to="/admin/projects"
+                  icon={<ReceiptOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Add Employee"
+                  to="/admin/addEmployee"
+                  icon={<PersonOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+                <Item
+                  title="Contacts Info"
+                  to="/contacts"
+                  icon={<ContactsOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
+              </SubMenu>
+            ) : null}
+
             <SubMenu
               title="Account"
               color={colors.grey[100]}
@@ -314,25 +300,26 @@ const Sidebar = ({ user, handleLogoutClick }) => {
               }}
             >
               {user === null ? (
-              <Item
-                title="Login"
-                to="/login"
-                icon={<MapOutlinedIcon />}
-                selected={selected}
-                setSelected={setSelected}
-              />
+                <Item
+                  title="Login"
+                  to="/login"
+                  icon={<MapOutlinedIcon />}
+                  selected={selected}
+                  setSelected={setSelected}
+                />
               ) : (
-              <MenuItem
-                title="Logout"
-                to="/login"
-                icon={<MapOutlinedIcon />}
-                onClick={handleLogoutClick}
-                style={{
-                  margin: "10px 0 20px 0",
-                  color: colors.grey[100],
-                }}
-              >Logout
-              </MenuItem>
+                <MenuItem
+                  title="Logout"
+                  to="/login"
+                  icon={<MapOutlinedIcon />}
+                  onClick={handleLogoutClick}
+                  style={{
+                    margin: "10px 0 20px 0",
+                    color: colors.grey[100],
+                  }}
+                >
+                  Logout
+                </MenuItem>
               )}
               {/* <Item
                 title="Calendar"

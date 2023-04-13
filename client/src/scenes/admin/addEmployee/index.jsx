@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography, useTheme, Button, TextField } from "@mui/material";
+import {
+  Box,
+  useTheme,
+  Button,
+  TextField,
+  MenuItem,
+} from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
-import { Formik, Form, useField } from "formik";
+import { Formik, Form } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 
-const AddEmployee = ({ handleUpdateEmployees }) => {
+const AddEmployee = ({ handleAddEmployee }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
@@ -33,7 +38,7 @@ const AddEmployee = ({ handleUpdateEmployees }) => {
     })
       .then((r) => r.json())
       .then((data) => {
-        handleUpdateEmployees(data);
+        handleAddEmployee(data);
         alert(`Employee ${values.firstname} ${values.lastname} Added`);
         navigate("/admin/team");
       });
@@ -155,8 +160,9 @@ const AddEmployee = ({ handleUpdateEmployees }) => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="text"
+                type="select"
                 label="Title"
+                select="true"
                 onBlur={handleBlur}
                 onChange={handleChange}
                 value={values.title}
@@ -164,7 +170,12 @@ const AddEmployee = ({ handleUpdateEmployees }) => {
                 error={!!touched.title && !!errors.title}
                 helperText={touched.title && errors.title}
                 sx={{ gridColumn: "span 4" }}
-              />
+              >
+                <MenuItem value="On Site Tech">On Site Tech</MenuItem>
+                <MenuItem value="Data Analyst">Data Analyst</MenuItem>
+                <MenuItem value="Marketing">Marketing</MenuItem>
+                <MenuItem value="Other">Other</MenuItem>
+              </TextField>
               <TextField
                 fullWidth
                 variant="filled"
