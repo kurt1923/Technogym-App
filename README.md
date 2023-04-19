@@ -12,23 +12,23 @@ This project is an application for a company to mange employee projeccts with. T
 
 ##Technologies Used
 
-Ruby on Rails - backend
-React - front end
-SQL - Database
+- Ruby on Rails - backend
+- React - front end
+- SQL - Database
 
 ## Ruby Gems Used
-Rails
-Puma
-bcrypt
-bootsnap
-active model serializers
-faker
+- Rails
+- Puma
+- bcrypt
+- bootsnap
+- active model serializers
+- faker
 
 ## Notable React Dependencies
-React Pro Sidebar-used to make the application sidebar
-Nivo charts-used to make pie charts
-Material UI and MUI datagrid - used for several components and all data tables
-Formik - used to make forms for the application
+- React Pro Sidebar-used to make the application sidebar
+- Nivo charts-used to make pie charts
+- Material UI and MUI datagrid - used for several components and all data tables
+- Formik - used to make forms for the application
 
 
 
