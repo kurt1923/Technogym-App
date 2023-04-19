@@ -25,10 +25,39 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
   const userAssignedCompleted = projects.filter((project) => {
     return project.admin_id === user.id && project.completed === true;
   });
+
+  const sortProjectsByUpdatedDate = projectsCompleted.sort((a, b) => {
+    const dateA = new Date(a.updated_at);
+    const dateB = new Date(b.updated_at);
+    if (dateA < dateB) {
+      return 1;
+    }
+    if (dateA > dateB) {
+      return -1;
+    }
+    return 0;
+  }).slice(0, 3);
+
+
+  const lastThreeUserAssigned = userAssigned.sort((a, b) => {
+    const dateA = new Date(a.created_at);
+    const dateB = new Date(b.created_at);
+    if (dateA < dateB) {
+      return 1;
+    }
+    if (dateA > dateB) {
+      return -1;
+    }
+    return 0;
+  }).slice(0, 3);
+
   // const allDatesMoretThanAMonthOld = projects.filter((project) => {
   //   return project.created_at < new Date().setMonth(new Date().getMonth() - 1);
   // });
-  // console.log(allDatesMoretThanAMonthOld);
+  console.log(lastThreeUserAssigned);
+
+
+
 
   const totalEmployeesByTitle = employees.reduce((acc, employee) => {
     if (acc[employee.title]) {
@@ -38,8 +67,6 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     }
     return acc;
   }, {});
-
-  console.log(totalEmployeesByTitle);
 
   return (
     <Box m="20px">
@@ -165,47 +192,50 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
           />
         </Box>
         <Box
-          gridColumn="span 8"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
         >
           <Box
-            mt="25px"
-            p="0 30px"
-            display="flex "
+            display="flex"
             justifyContent="space-between"
             alignItems="center"
+            borderBottom={`4px solid ${colors.primary[500]}`}
+            colors={colors.grey[100]}
+            p="15px"
           >
-            <Box>
-              <Typography
-                variant="h5"
-                fontWeight="600"
-                color={colors.grey[100]}
-              >
-                Revenue Generated
-              </Typography>
-              <Typography
-                variant="h3"
-                fontWeight="bold"
-                color={colors.greenAccent[500]}
-              >
-                $59,342.32
-              </Typography>
-            </Box>
-            <Box>
-              <IconButton>
-                <DownloadOutlinedIcon
-                  sx={{ fontSize: "26px", color: colors.greenAccent[500] }}
-                />
-              </IconButton>
-            </Box>
+            <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
+              Recently Assigned Projects
+            </Typography>
           </Box>
-          <Box height="250px" m="-20px 0 0 0">
-            {/* <PieChart isDashboard={true} data ={totalEmployeesByTitle}/> */}
-          </Box>
+          
+          {lastThreeUserAssigned.map((project) => (
+            <Box
+              key={project.id}
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              borderBottom={`4px solid ${colors.primary[500]}`}
+              p="15px"
+            >
+              <Box>
+                <Typography
+                  color={colors.greenAccent[500]}
+                  variant="h5"
+                  fontWeight="600"
+                >
+                  {project.name}
+                </Typography>
+                <Typography color={colors.grey[100]}>
+                  {project.employeeName}
+                </Typography>
+              </Box>
+              <Box color={colors.grey[100]}>{project.updated_at}</Box>
+            </Box>
+          ))}
         </Box>
         <Box
-          gridColumn="span 4"
+          gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
           overflow="auto"
@@ -219,12 +249,13 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Transactions
+              Recent Completed Projects
             </Typography>
           </Box>
-          {/* {mockTransactions.map((transaction, i) => (
+          
+          {sortProjectsByUpdatedDate.map((project) => (
             <Box
-              key={`${transaction.txId}-${i}`}
+              key={project.id}
               display="flex"
               justifyContent="space-between"
               alignItems="center"
@@ -237,22 +268,15 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
                   variant="h5"
                   fontWeight="600"
                 >
-                  {transaction.txId}
+                  {project.name}
                 </Typography>
                 <Typography color={colors.grey[100]}>
-                  {transaction.user}
+                  {project.employeeName}
                 </Typography>
               </Box>
-              <Box color={colors.grey[100]}>{transaction.date}</Box>
-              <Box
-                backgroundColor={colors.greenAccent[500]}
-                p="5px 10px"
-                borderRadius="4px"
-              >
-                ${transaction.cost}
-              </Box>
+              <Box color={colors.grey[100]}>{project.updated_at}</Box>
             </Box>
-          ))} */}
+          ))}
         </Box>
       </Box>
     </Box>
