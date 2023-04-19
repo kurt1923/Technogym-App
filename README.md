@@ -1,24 +1,38 @@
-# Project Template: React/Rails API
+# Flatiron Phase 4 Project
 
 ## Description
 
-This project is scaffolded so that you can build a React frontend and Rails
-backend together, and easily deploy them to Render.
-
-**Note**: if you are not planning to deploy your app to Render and prefer to use
-SQLite, you will need to make the following changes in the project files:
-
-1. In the `Gemfile`, replace `gem 'pg', '~> 1.1'` with `gem 'sqlite3', '~>
-   1.4'`.
-2. In the `database.yml` file, change the line `adapter: postgresql` to
-   `adapter: sqlite3`.
+This project is an application for a company to mange employee projeccts with. The application allows admin to assign different projects to employees, create new employees, update projects and edit projects. The application has admin signin features with encrypted passwords using Bcrypt. The admin has a dashboard component displaying a large amount of admin data that is easily accessible. All projects and employee information are supplied by the faker gem and are accessible through the applicaition as well. Material UI sorting features are made possible through MUI Datagrid features.  
 
 ## Requirements
 
 - Ruby 2.7.4
 - NodeJS (v16), and npm
-- Render account
 - Postgresql
+
+##Technologies Used
+
+Ruby on Rails - backend
+React - front end
+SQL - Database
+
+## Ruby Gems Used
+Rails
+Puma
+bcrypt
+bootsnap
+active model serializers
+faker
+
+## Notable React Dependencies
+React Pro Sidebar-used to make the application sidebar
+Nivo charts-used to make pie charts
+Material UI and MUI datagrid - used for several components and all data tables
+Formik - used to make forms for the application
+
+
+
+
 
 See Environment Setup below for instructions on installing these tools if you
 don't already have them.
