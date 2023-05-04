@@ -29,6 +29,11 @@ class ProjectsController < ApplicationController
         project.destroy
         head :no_content
     end
+
+    def completed
+        projects = Project.findCompletedProjects(params[:completed])
+        render json: projects, include: :admin, include: :employee
+    end
     
 
     private

@@ -6,7 +6,15 @@ class Project < ApplicationRecord
     validates :description, presence: true
     validates :category, presence: true
 
-    def queryCompleted
-        Project.where(completed: true)
+    def self.findCompletedProjects(string)
+        completed = string.downcase == "true"
+
+        if completed 
+            Project.where(completed: true).order(:created_at).limit(5)
+        else
+            Project.where(completed: false).order(:created_at).limit(5)
+        end
     end
+
+    
 end
