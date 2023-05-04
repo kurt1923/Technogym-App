@@ -6,7 +6,7 @@ import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../../components/StatBox";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
-import PieChart from "../../../components/PieChart";
+import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 
 const AdminDashboard = ({ user, projects, employees, admin }) => {
   const theme = useTheme();
@@ -26,38 +26,50 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     return project.admin_id === user.id && project.completed === true;
   });
 
-  const sortProjectsByUpdatedDate = projectsCompleted.sort((a, b) => {
-    const dateA = new Date(a.updated_at);
-    const dateB = new Date(b.updated_at);
-    if (dateA < dateB) {
-      return 1;
-    }
-    if (dateA > dateB) {
-      return -1;
-    }
-    return 0;
-  }).slice(0, 3);
+  const userAdmin = admin.filter((admin) => {
+    return admin.id === user.id;
+  });
+  const adminsEmployees = userAdmin.map((admin) => {
+    return admin.employees;
+  });
+
+  const uniqueAdminsEmployees = Array.from(new Set(adminsEmployees.map(obj => obj.id))).map(id => {
+    return adminsEmployees.find(obj => obj.id === id);
+  });
+
+  console.log(uniqueAdminsEmployees)
+
+  
+  
 
 
-  const lastThreeUserAssigned = userAssigned.sort((a, b) => {
-    const dateA = new Date(a.created_at);
-    const dateB = new Date(b.created_at);
-    if (dateA < dateB) {
-      return 1;
-    }
-    if (dateA > dateB) {
-      return -1;
-    }
-    return 0;
-  }).slice(0, 3);
+  const sortProjectsByUpdatedDate = projectsCompleted
+    .sort((a, b) => {
+      const dateA = new Date(a.updated_at);
+      const dateB = new Date(b.updated_at);
+      if (dateA < dateB) {
+        return 1;
+      }
+      if (dateA > dateB) {
+        return -1;
+      }
+      return 0;
+    })
+    .slice(0, 3);
 
-  // const allDatesMoretThanAMonthOld = projects.filter((project) => {
-  //   return project.created_at < new Date().setMonth(new Date().getMonth() - 1);
-  // });
-  console.log(lastThreeUserAssigned);
-
-
-
+  const lastThreeUserAssigned = userAssigned
+    .sort((a, b) => {
+      const dateA = new Date(a.created_at);
+      const dateB = new Date(b.created_at);
+      if (dateA < dateB) {
+        return 1;
+      }
+      if (dateA > dateB) {
+        return -1;
+      }
+      return 0;
+    })
+    .slice(0, 3);
 
   const totalEmployeesByTitle = employees.reduce((acc, employee) => {
     if (acc[employee.title]) {
@@ -68,6 +80,69 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     return acc;
   }, {});
 
+  const columns = [
+    {
+      field: "id",
+      headerName: "ID",
+      flex: 0.5,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "img",
+      headerName: "Image",
+      flex: 1,
+      cellClassName: "name-column--cell",
+      renderCell: (params) => (
+        <img src={params.value} alt="employee" width="50px" height="50px" />
+      ),
+    },
+    {
+      field: "lastname",
+      headerName: "Name",
+      flex: 1,
+      cellClassName: "name-column--cell",
+    },
+    {
+      field: "completedProjects",
+      headerName: "Completed",
+      flex: 1,
+    },
+    {
+      field: "incompleteProjects",
+      headerName: "Working On",
+      flex: 1,
+    },
+    {
+      field: "title",
+      headerName: "Job Title",
+      flex: 1,
+      headerAlign: "center",
+      renderCell: ({ row: { title } }) => {
+        return (
+          <Box
+            width="80%"
+            m="0 auto"
+            p="5px"
+            display="flex"
+            justifyContent="center"
+            backgroundColor={
+              title === "employee"
+                ? colors.blueAccent[500]
+                : title === "admin"
+                ? colors.blueAccent[400]
+                : colors.blueAccent[400]
+            }
+            borderRadius="4px"
+          >
+            <Typography color={colors.grey[100]} sx={{ ml: "5px" }}>
+              {title}
+            </Typography>
+          </Box>
+        );
+      },
+    },
+  ];
+
   return (
     <Box m="20px">
       {/* {user === null ?         
@@ -76,7 +151,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
           subtitle="Welcome to your dashboard" />
           </Box>):  */}
 
-      <Box display="flex" justifyContent="space-between" alignItems="center">
+      <Box display="flex" justifyContent="space-between" alignItems="center" >
         <Header
           title={`${user.firstname} ${user.lastname}`}
           subtitle="Welcome to your dashboard"
@@ -195,6 +270,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
           gridColumn="span 6"
           gridRow="span 2"
           backgroundColor={colors.primary[400]}
+          overflow="auto"
         >
           <Box
             display="flex"
@@ -208,7 +284,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
               Recently Assigned Projects
             </Typography>
           </Box>
-          
+
           {lastThreeUserAssigned.map((project) => (
             <Box
               key={project.id}
@@ -252,7 +328,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
               Recent Completed Projects
             </Typography>
           </Box>
-          
+
           {sortProjectsByUpdatedDate.map((project) => (
             <Box
               key={project.id}
@@ -278,6 +354,72 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
             </Box>
           ))}
         </Box>
+      </Box>
+      <Box paddingTop={3} >
+      <Header title="MY TEAM" subtitle="Managing my Employees" />
+      <Box
+        m="40px 0 0 0"
+        height="40vh"
+        border={2}
+        borderColor={colors.grey[900]}
+        borderRadius={2}
+        sx={{
+          "& .MuiDataGrid-root": {
+            border: "none",
+          },
+          "& .MuiDataGrid-cell": {
+            color: colors.primary[900],
+            border: "none",
+          },
+          "& .name-column--cell": {
+            color: colors.primary[900],
+            border: "none",
+          },
+          "& .MuiDataGrid-columnHeaders": {
+            backgroundColor: colors.primary[300],
+            borderBottom: "none",
+          },
+          "& .MuiDataGrid-virtualScroller": {
+            backgroundColor: colors.grey[50],
+            border: "none",
+          },
+          "& .MuiDataGrid-footerContainer": {
+            borderTop: "none",
+            backgroundColor: colors.primary[300],
+          },
+          "& .MuiCheckbox-root": {
+            color: `${colors.blueAccent[400]} !important`,
+            border: "none",
+          },
+          "& .MuiDataGrid-toolbarContainer .MuiButton-text": {
+            color: `${colors.grey[900]} !important`,
+            border: "none",
+          },
+          "& .MuiDataGrid-row:hover": {
+            backgroundColor: colors.grey[700],
+            border: "none",
+          },
+          img: {
+            width: "5vwv",
+            height: "5vw",
+            borderRadius: "90%",
+            border: "2px solid #fff",
+          },
+        }}
+      >
+        <DataGrid
+          // checkboxSelection
+          // onRowSelectionModelChange={(newRowSelectionModel) => {
+          //   setRowSelectionModel(newRowSelectionModel);
+          //   handleSelectEmployees(newRowSelectionModel)
+          // }}
+          // rowSelectionModel={rowSelectionModel}
+          {...employees}
+          rows={employees}
+          columns={columns}
+          components={{ Toolbar: GridToolbar }}
+        />
+      </Box>
       </Box>
     </Box>
   );

@@ -1,4 +1,12 @@
-import { Box, Typography, useTheme, Button, TextField, Select, MenuItem } from "@mui/material";
+import {
+  Box,
+  Typography,
+  useTheme,
+  Button,
+  TextField,
+  Select,
+  MenuItem,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import AdminPanelSettingsOutlinedIcon from "@mui/icons-material/AdminPanelSettingsOutlined";
@@ -10,12 +18,20 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 
-const Assign = ({ employees, projects, selectEmployees, addNewProject, user }) => {
+const Assign = ({
+  employees,
+  projects,
+  selectEmployees,
+  addNewProject,
+  user,
+  setSelectEmployees,
+  setRowSelectionModel
+}) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
-  const initialValues ={
+  const initialValues = {
     name: "",
     description: "",
     completed: false,
@@ -24,7 +40,7 @@ const Assign = ({ employees, projects, selectEmployees, addNewProject, user }) =
     category: "",
   };
 
-console.log(selectEmployees)
+  console.log(selectEmployees);
   function handleFormSubmit(values, { resetForm }) {
     fetch(`/projects`, {
       method: "POST",
@@ -32,17 +48,25 @@ console.log(selectEmployees)
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        addNewProject(data);
+    }).then((res) => {
+      if (res.ok) {
+        navigate("/admin/team");
         alert(`Project ${values.name} Added`);
         resetForm();
-        navigate("/admin/team");
-      });
+        setRowSelectionModel([]);
+        res.json().then((project) => addNewProject(project));
+      } else {
+        res.json().then((errors) => {
+          console.log(errors);
+          alert("All fields must be filled out");
+        });
+      }
+    });
   }
+
   console.log(selectEmployees[0]);
   console.log(initialValues);
+
 
   const columns = [
     {
@@ -90,7 +114,7 @@ console.log(selectEmployees)
       },
     },
   ];
-  
+
   return (
     <Box m="20px">
       <Header title="Assign" subtitle="Assign These Team Members Projects" />
@@ -218,7 +242,7 @@ console.log(selectEmployees)
                 value={values.category}
                 error={!!touched.category && !!errors.category}
                 helperText={touched.category && errors.category}
-               >
+              >
                 <MenuItem value="Fire">Fire</MenuItem>
                 <MenuItem value="Police">Police</MenuItem>
                 <MenuItem value="Military">Military</MenuItem>
@@ -227,7 +251,11 @@ console.log(selectEmployees)
                 <MenuItem value="Other">Other</MenuItem>
               </Select>
               <Box display="flex" justifyContent="center" m="10px" p="10px">
-                <Button type="submit" sx={{ backgroundColor: colors.blueAccent[300] }} variant="contained">
+                <Button
+                  type="submit"
+                  sx={{ backgroundColor: colors.blueAccent[300] }}
+                  variant="contained"
+                >
                   Submit Project
                 </Button>
               </Box>

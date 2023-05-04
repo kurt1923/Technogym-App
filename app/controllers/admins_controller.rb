@@ -1,6 +1,7 @@
 class AdminsController < ApplicationController
 rescue_from ActiveRecord::RecordNotFound, with: :render_not_found_response
 rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
+before_action :authorize, only: [:show, :update]
     
     def index
         admins = Admin.all
@@ -15,6 +16,10 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_resp
             render json: { errors: ["Not authorized"] }, status: :unauthorized
         end
     end
+    # def show
+    #     admin = find_admin
+    #     render json: admin, include: :employees
+    # end
 
     def create
         admin = Admin.create!(admin_params)

@@ -48,13 +48,13 @@ function App() {
     fetch("/employees")
       .then((res) => res.json())
       .then((data) => setEmployees(data));
-  }, []);
+  }, [projects]);
 
   useEffect(() => {
     fetch("/projects")
       .then((res) => res.json())
       .then((data) => setProjects(data));
-  }, [employees]);
+  }, []);
 
   useEffect(() => {
     fetch("/admins")
@@ -131,7 +131,7 @@ function App() {
                   <Home/>
                 }
               />
-              {user !== null ? (
+              {user !== null || undefined ? (
               <>
               <Route
                 path="/admin"
@@ -167,6 +167,8 @@ function App() {
                     selectEmployees={selectEmployees}
                     addNewProject={addNewProject}
                     user={user}
+                    setSelectEmployees={setSelectEmployees}
+                    setRowSelectionModel={setRowSelectionModel}
                   />
                 }
               />

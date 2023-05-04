@@ -5,4 +5,8 @@ class Project < ApplicationRecord
     validates :name, presence: true
     validates :description, presence: true
     validates :category, presence: true
+
+    def queryCompleted
+        Project.where(completed: true)
+    end
 end

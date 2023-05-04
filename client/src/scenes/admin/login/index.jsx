@@ -13,7 +13,7 @@ import image from ".//loginPic.png";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
 
-const Login = ({ user, setUser }) => {
+const Login = ({ user, setUser, resetForm }) => {
   const navigate = useNavigate();
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -29,24 +29,20 @@ const Login = ({ user, setUser }) => {
         password: data.get("password"),
       }),
     })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
-        setUser(data);
-        navigate("/admin")
-      });
+      .then((res) => {
+        if (res.ok) {
+          navigate("/admin");
+          res.json().then((user) => setUser(user));
+        } else {
+          res.json().then((errors) => {
+            console.log(errors);
+            alert("incorrect email or password")
+            
+          });
+        }
+      })
   };
-  
-      
-  
-    // const handleSubmit = (event) => {
-    //   event.preventDefault();
-    //   const data = new FormData(event.currentTarget);
-    //   console.log({
-    //     email: data.get('email'),
-    //     password: data.get('password'),
-    //   });
-    // };
+
     console.log(user)
     
 
@@ -136,7 +132,7 @@ const Login = ({ user, setUser }) => {
                 >
                   Sign In
                 </Button>
-                <Grid container>
+                {/* <Grid container>
                   <Grid item xs>
                     <Link href="#" variant="body2">
                       Forgot password?
@@ -147,7 +143,7 @@ const Login = ({ user, setUser }) => {
                       {"Don't have an account? Sign Up"}
                     </Link>
                   </Grid>
-                </Grid>
+                </Grid> */}
               </Box>
             </Box>
           </Grid>

@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :admins do
-    resources :projects
+    resources :employees
   end
   resources :employees do
     resources :projects 

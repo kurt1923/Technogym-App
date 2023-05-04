@@ -20,18 +20,6 @@ const Projects = ({
   const complete = (params) => {
     return params.row.completed ? "Completed" : "Ongoing";
   };
-  const getEmployeeIdName = (params) => {
-    const findEmp = employees.filter((employee) => {
-      return employee.id === params.row.employee_id;
-    });
-    return findEmp[0].firstname + " " + findEmp[0].lastname;
-  };
-  const getAdminIdName = (params) => {
-    const findAdmin = admin.filter((a) => {
-      return a.id === params.row.admin_id;
-    });
-    return findAdmin[0].firstname + " " + findAdmin[0].lastname;
-  };
 
   const createDate = (params) => {
     const date = new Date(params.row.created_at);

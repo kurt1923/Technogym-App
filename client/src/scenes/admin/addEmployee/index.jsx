@@ -36,13 +36,18 @@ const AddEmployee = ({ handleAddEmployee }) => {
       },
       body: JSON.stringify(values),
     })
-      .then((r) => r.json())
-      .then((data) => {
-        handleAddEmployee(data);
-        alert(`Employee ${values.firstname} ${values.lastname} Added`);
+    .then((res) => {
+      if (res.ok) {
         navigate("/admin/team");
-      });
-  }
+        res.json().then((employee) => handleAddEmployee(employee));
+      } else {
+        res.json().then((errors) => {
+          console.log(errors);
+          alert("All fields must be filled out")
+        });
+      }
+    })
+  };
 
   return (
     <Box m="20px">

@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :invalid_project
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-    # before_action :authorize
+    before_action :authorize
 
     def index
         projects = Project.all
@@ -29,6 +29,7 @@ class ProjectsController < ApplicationController
         project.destroy
         head :no_content
     end
+    
 
     private
 
