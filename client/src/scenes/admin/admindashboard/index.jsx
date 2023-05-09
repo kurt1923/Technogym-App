@@ -7,10 +7,19 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../../components/StatBox";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import { useEffect, useState } from "react";
 
 const AdminDashboard = ({ user, projects, employees, admin }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [adminEmployees, setAdminEmployees] = useState([]);
+
+  useEffect(() => {
+    fetch(`admins/${user.id}/unique_employees_list`)
+      .then((res) => res.json())
+      .then((data) => setAdminEmployees(data));
+  }, []);
+
   const employeesWithProjects = employees.filter((employee) => {
     return employee.projects.length > 0;
   });
@@ -26,23 +35,9 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     return project.admin_id === user.id && project.completed === true;
   });
 
-  const userAdmin = admin.filter((admin) => {
-    return admin.id === user.id;
-  });
-  const adminsEmployees = userAdmin.map((admin) => {
-    return admin.employees;
-  });
 
-  const uniqueAdminsEmployees = Array.from(new Set(adminsEmployees.map(obj => obj.id))).map(id => {
-    return adminsEmployees.find(obj => obj.id === id);
-  });
-
-  console.log(uniqueAdminsEmployees)
 
   
-  
-
-
   const sortProjectsByUpdatedDate = projectsCompleted
     .sort((a, b) => {
       const dateA = new Date(a.updated_at);
@@ -355,10 +350,10 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
           ))}
         </Box>
       </Box>
-      <Box paddingTop={3} >
-      <Header title="MY TEAM" subtitle="Managing my Employees" />
+      <Box paddingTop={3} paddingBottom={3}>
+      <Header title="MY TEAM" subtitle= {`${user.firstname} ${user.lastname} has ${adminEmployees.length} Assigned Employees`} />
       <Box
-        m="40px 0 0 0"
+        m="10px 0 0 0"
         height="40vh"
         border={2}
         borderColor={colors.grey[900]}
@@ -414,8 +409,8 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
           //   handleSelectEmployees(newRowSelectionModel)
           // }}
           // rowSelectionModel={rowSelectionModel}
-          {...employees}
-          rows={employees}
+          {...adminEmployees}
+          rows={adminEmployees}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

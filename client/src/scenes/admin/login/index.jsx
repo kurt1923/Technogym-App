@@ -28,23 +28,20 @@ const Login = ({ user, setUser, resetForm }) => {
         email: data.get("email"),
         password: data.get("password"),
       }),
-    })
-      .then((res) => {
-        if (res.ok) {
-          navigate("/admin");
-          res.json().then((user) => setUser(user));
-        } else {
-          res.json().then((errors) => {
-            console.log(errors);
-            alert("incorrect email or password")
-            
-          });
-        }
-      })
+    }).then((res) => {
+      if (res.ok) {
+        navigate("/admin");
+        res.json().then((user) => setUser(user));
+      } else {
+        res.json().then((errors) => {
+          console.log(errors);
+          alert("incorrect email or password");
+        });
+      }
+    });
   };
 
-    console.log(user)
-    
+  console.log(user);
 
   return (
     <Container component="main" maxWidth="lg">

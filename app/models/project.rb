@@ -15,6 +15,18 @@ class Project < ApplicationRecord
             Project.where(completed: false).order(:created_at).limit(5)
         end
     end
+    # attr_accessor :completed
 
+    # def initialize(completed)
+    #   @completed = completed
+    # end
+  
+    # def self.findCompletedProjects
+    #   Project.where(completed: @completed)
+    #          .where.not(completed: nil)
+    #          .order(created_at: :desc)
+    #          .limit(5)
+    # end
+  
     
 end

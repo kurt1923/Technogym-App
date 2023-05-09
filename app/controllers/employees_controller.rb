@@ -1,7 +1,7 @@
 class EmployeesController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :invalid_project
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-    before_action :authorize
+    
 
     def index
         employees = Employee.all

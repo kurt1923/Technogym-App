@@ -1,10 +1,4 @@
-import {
-  Box,
-  useTheme,
-  Button,
-  TextField,
-  MenuItem,
-} from "@mui/material";
+import { Box, useTheme, Button, TextField, MenuItem } from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { Formik, Form } from "formik";
@@ -35,19 +29,18 @@ const AddEmployee = ({ handleAddEmployee }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
-    })
-    .then((res) => {
+    }).then((res) => {
       if (res.ok) {
         navigate("/admin/team");
         res.json().then((employee) => handleAddEmployee(employee));
       } else {
         res.json().then((errors) => {
           console.log(errors);
-          alert("All fields must be filled out")
+          alert("All fields must be filled out");
         });
       }
-    })
-  };
+    });
+  }
 
   return (
     <Box m="20px">
@@ -165,7 +158,6 @@ const AddEmployee = ({ handleAddEmployee }) => {
               <TextField
                 fullWidth
                 variant="filled"
-                type="select"
                 label="Title"
                 select="true"
                 onBlur={handleBlur}

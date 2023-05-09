@@ -14,6 +14,7 @@ Rails.application.routes.draw do
   delete '/logout', to: 'sessions#destroy'
   get '/me', to: 'admins#show'
   get '/projects/completed/:completed', to: 'projects#completed'
+  get 'admins/:id/unique_employees_list', to: 'admins#unique_employees_list'
 
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 end
