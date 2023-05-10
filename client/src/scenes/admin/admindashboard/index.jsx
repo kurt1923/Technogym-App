@@ -1,4 +1,4 @@
-import { Box, Button, IconButton, Typography, useTheme } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import DownloadOutlinedIcon from "@mui/icons-material/DownloadOutlined";
@@ -18,7 +18,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     fetch(`admins/${user.id}/unique_employees_list`)
       .then((res) => res.json())
       .then((data) => setAdminEmployees(data));
-  }, []);
+  }, [user.id]);
 
   const employeesWithProjects = employees.filter((employee) => {
     return employee.projects.length > 0;
@@ -66,14 +66,14 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     })
     .slice(0, 3);
 
-  const totalEmployeesByTitle = employees.reduce((acc, employee) => {
-    if (acc[employee.title]) {
-      acc[employee.title] += 1;
-    } else {
-      acc[employee.title] = 1;
-    }
-    return acc;
-  }, {});
+  // const totalEmployeesByTitle = employees.reduce((acc, employee) => {
+  //   if (acc[employee.title]) {
+  //     acc[employee.title] += 1;
+  //   } else {
+  //     acc[employee.title] = 1;
+  //   }
+  //   return acc;
+  // }, {});
 
   const columns = [
     {
@@ -276,7 +276,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recently Assigned Projects
+              My Recently Assigned Projects
             </Typography>
           </Box>
 
@@ -320,7 +320,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
             p="15px"
           >
             <Typography color={colors.grey[100]} variant="h5" fontWeight="600">
-              Recent Completed Projects
+              TAPS Recent Completed Projects
             </Typography>
           </Box>
 

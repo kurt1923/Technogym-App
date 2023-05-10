@@ -4,7 +4,6 @@ import {
   useTheme,
   Button,
   TextField,
-  Select,
   MenuItem,
 } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
@@ -233,10 +232,11 @@ const Assign = ({
                 helperText={touched.description && errors.description}
                 sx={{ gridColumn: "span 2" }}
               />
-              <Select
+              <TextField
                 name="category"
                 label="Category"
                 placeholder="Category"
+                select={true}
                 onChange={handleChange}
                 onBlur={handleBlur}
                 value={values.category}
@@ -249,7 +249,7 @@ const Assign = ({
                 <MenuItem value="Marketing">Marketing</MenuItem>
                 <MenuItem value="Testing">Testing</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
-              </Select>
+              </TextField>
               <Box display="flex" justifyContent="center" m="10px" p="10px">
                 <Button
                   type="submit"

@@ -1,4 +1,4 @@
-import { Box, useTheme, Button, TextField, MenuItem, Select } from "@mui/material";
+import { Box, useTheme, Button, TextField, MenuItem } from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { Formik, Form } from "formik";
@@ -32,7 +32,8 @@ const AddAdmin = ({ handleAddAdmin }) => {
       body: JSON.stringify(values),
     }).then((res) => {
       if (res.ok) {
-        navigate("/admin/dashboard");
+        alert("Admin Created, please login to continue");
+        navigate("/login");
         res.json().then((admin) => handleAddAdmin(admin));
       } else {
         res.json().then((errors) => {
@@ -156,10 +157,11 @@ const AddAdmin = ({ handleAddAdmin }) => {
                 helperText={touched.phone && errors.phone}
                 sx={{ gridColumn: "span 4" }}
               />
-              <Select
+              <TextField
                 fullWidth
                 variant="filled"
                 label="Title"
+                select={true}
                 placeholder="Title"
                 onBlur={handleBlur}
                 onChange={handleChange}
@@ -173,7 +175,7 @@ const AddAdmin = ({ handleAddAdmin }) => {
                 <MenuItem value="Data Analyst">Data Analyst</MenuItem>
                 <MenuItem value="Marketing">Marketing</MenuItem>
                 <MenuItem value="Other">Other</MenuItem>
-              </Select>
+              </TextField>
               <TextField
                 fullWidth
                 variant="filled"
@@ -212,7 +214,7 @@ const AddAdmin = ({ handleAddAdmin }) => {
                   variant="contained"
                   sx={{ backgroundColor: colors.blueAccent[300] }}
                 >
-                  Add Employee
+                  Create Admin Account
                 </Button>
               </Box>
             </Box>
@@ -223,8 +225,8 @@ const AddAdmin = ({ handleAddAdmin }) => {
   );
 };
 
-const phoneRegExp =
-  /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
+// const phoneRegExp =
+//   /^((\+[1-9]{1,4}[ -]?)|(\([0-9]{2,3}\)[ -]?)|([0-9]{2,4})[ -]?)*?[0-9]{3,4}[ -]?[0-9]{3,4}$/;
 
 const checkoutSchema = yup.object().shape({
   // firstname: yup.string().required("required"),
