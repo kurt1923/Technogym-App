@@ -13,7 +13,7 @@ import EditProject from "./scenes/admin/editProject";
 import Login from "./scenes/admin/login";
 import AdminDashboard from "./scenes/admin/admindashboard";
 import Home from "./scenes/tapspages/Home";
-
+import AddAdmin from "./scenes/admin/addadmin";
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -80,7 +80,11 @@ function App() {
     const updatedEmployees = [...employees, newEmployee];
     setEmployees(updatedEmployees);
   }
-    
+
+  function handleAddAdmin(newAdmin) {
+    const updatedAdmin = [...admin, newAdmin];
+    setAdmin(updatedAdmin);
+  }
 
   function handleDeleteProject(id) {
     const updatedProjects = projects.filter((project) => project.id !== id);
@@ -125,93 +129,98 @@ function App() {
               user={user}
             />
             <Routes>
-              <Route
-                path="/"
-                element={
-                  <Home/>
-                }
-              />
+              <Route path="/" element={<Home />} />
               {user !== null || undefined ? (
-              <>
-              <Route
-                path="/admin"
-                element={
-                  <AdminDashboard
-                    user={user}
-                    projects={projects}
-                    employees={employees}
-                    admin={admin}
+                <>
+                  <Route
+                    path="/admin"
+                    element={
+                      <AdminDashboard
+                        user={user}
+                        projects={projects}
+                        employees={employees}
+                        admin={admin}
+                      />
+                    }
                   />
-                }
-              />
-              <Route
-                path="/admin/team"
-                element={
-                  <Team
-                    employees={employees}
-                    projects={projects}
-                    selectEmployees={selectEmployees}
-                    setSelectEmployees={setSelectEmployees}
-                    rowSelectionModel={rowSelectionModel}
-                    setRowSelectionModel={setRowSelectionModel}
-                    handleDeleteEmployee={handleDeleteEmployee}
-                    user={user}
+                  <Route
+                    path="/admin/team"
+                    element={
+                      <Team
+                        employees={employees}
+                        projects={projects}
+                        selectEmployees={selectEmployees}
+                        setSelectEmployees={setSelectEmployees}
+                        rowSelectionModel={rowSelectionModel}
+                        setRowSelectionModel={setRowSelectionModel}
+                        handleDeleteEmployee={handleDeleteEmployee}
+                        user={user}
+                      />
+                    }
                   />
-                }
-              />
-              <Route
-                path="/admin/team/assign"
-                element={
-                  <Assign
-                    employees={employees}
-                    selectEmployees={selectEmployees}
-                    addNewProject={addNewProject}
-                    user={user}
-                    setSelectEmployees={setSelectEmployees}
-                    setRowSelectionModel={setRowSelectionModel}
+                  <Route
+                    path="/admin/team/assign"
+                    element={
+                      <Assign
+                        employees={employees}
+                        selectEmployees={selectEmployees}
+                        addNewProject={addNewProject}
+                        user={user}
+                        setSelectEmployees={setSelectEmployees}
+                        setRowSelectionModel={setRowSelectionModel}
+                      />
+                    }
                   />
-                }
-              />
-              <Route
-                path="/contacts"
-                element={<Contacts employees={employees} />}
-              />
-              <Route
-                path="/admin/projects"
-                element={
-                  <Projects
-                    projects={projects}
-                    handleDeleteProject={handleDeleteProject}
-                    selectProjects={selectProjects}
-                    setSelectProjects={setSelectProjects}
-                    employees={employees}
-                    rowSelectionModel={rowSelectionModel}
-                    setRowSelectionModel={setRowSelectionModel}
-                    admin={admin}
+                  <Route
+                    path="/contacts"
+                    element={<Contacts employees={employees} />}
                   />
-                }
-              />
-              <Route
-                path="/admin/projects/editProject"
-                element={
-                  <EditProject
-                    projects={projects}
-                    selectProjects={selectProjects}
-                    handleUpdateProject={handleUpdateProject}
+                  <Route
+                    path="/admin/projects"
+                    element={
+                      <Projects
+                        projects={projects}
+                        handleDeleteProject={handleDeleteProject}
+                        selectProjects={selectProjects}
+                        setSelectProjects={setSelectProjects}
+                        employees={employees}
+                        rowSelectionModel={rowSelectionModel}
+                        setRowSelectionModel={setRowSelectionModel}
+                        admin={admin}
+                      />
+                    }
                   />
-                }
-              />
-              <Route
-                path="/admin/addEmployee"
-                element={
-                  <AddEmployee handleAddEmployee={handleAddEmployee} />
-                }
-              />
-              </>
+                  <Route
+                    path="/admin/projects/editProject"
+                    element={
+                      <EditProject
+                        projects={projects}
+                        selectProjects={selectProjects}
+                        handleUpdateProject={handleUpdateProject}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/admin/addEmployee"
+                    element={
+                      <AddEmployee handleAddEmployee={handleAddEmployee} />
+                    }
+                  />
+                </>
               ) : null}
               <Route
                 path="/login"
                 element={<Login user={user} setUser={setUser} />}
+              />
+              <Route
+                path="/signup"
+                element={
+                  <AddAdmin
+                    user={user}
+                    setUser={setUser}
+                    handleAddAdmin={handleAddAdmin}
+                  />
+                }
               />
             </Routes>
           </main>

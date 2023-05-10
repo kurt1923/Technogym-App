@@ -23,7 +23,7 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_resp
 
     def create
         admin = Admin.create!(admin_params)
-        session[:admin_id] = admin.id
+        # session[:admin_id] = admin.id
         render json: admin, status: :created
     end
 
@@ -46,7 +46,7 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_resp
     end
 
     def admin_params
-        params.permit(:firstname, :lastname, :email, :password_digest, :phone, :address, :img, :admin)
+        params.permit(:firstname, :lastname, :email, :password, :phone, :title, :address, :img, :admin)
     end
 
     def render_not_found_response
