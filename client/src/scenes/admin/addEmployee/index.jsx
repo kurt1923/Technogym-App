@@ -5,12 +5,15 @@ import { Formik, Form } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
 const AddEmployee = ({ handleAddEmployee }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const initialValues = {
     firstname: "",
     lastname: "",
@@ -34,8 +37,8 @@ const AddEmployee = ({ handleAddEmployee }) => {
         navigate("/admin/team");
         res.json().then((employee) => handleAddEmployee(employee));
       } else {
-        res.json().then((errors) => {
-          console.log(errors);
+        res.json().then((json) => {
+          setError(json.errors);
           alert("All fields must be filled out");
         });
       }
@@ -48,7 +51,10 @@ const AddEmployee = ({ handleAddEmployee }) => {
         title="Add Employee"
         subtitle="Complete Form and Submit to Add New Employee"
       />
-
+      <Typography component="h1" variant="h5" color="red">
+        {" "}
+        {error ? "Errors:" + error.map((e) => e).join(", ") : null}
+      </Typography>
       <Formik
         onSubmit={updateEmployees}
         initialValues={initialValues}

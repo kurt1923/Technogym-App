@@ -17,8 +17,7 @@ rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_resp
         end
     end
     def show
-        admin = find_admin
-        render json: admin, include: :employees
+        render json: current_admin, include: :employees
     end
 
     def create

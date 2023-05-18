@@ -5,12 +5,15 @@ import { Formik, Form } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
+import Typography from "@mui/material/Typography";
+import { useState } from "react";
 
 const AddAdmin = ({ handleAddAdmin }) => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const initialValues = {
     firstname: "",
     lastname: "",
@@ -20,7 +23,7 @@ const AddAdmin = ({ handleAddAdmin }) => {
     phone: "",
     address: "",
     img: "",
-    admin: false
+    admin: false,
   };
 
   function updateEmployees(values) {
@@ -36,8 +39,8 @@ const AddAdmin = ({ handleAddAdmin }) => {
         navigate("/login");
         res.json().then((admin) => handleAddAdmin(admin));
       } else {
-        res.json().then((errors) => {
-          console.log(errors);
+        res.json().then((json) => {
+          setError(json.errors);
           alert("All fields must be filled out");
         });
       }
@@ -50,6 +53,10 @@ const AddAdmin = ({ handleAddAdmin }) => {
         title="Add Admin....For FlatIron use only"
         subtitle="Complete Form and Submit to create your admin account and test project...In actual app admin will only be able to create other admin"
       />
+      <Typography component="h1" variant="h5" color="red">
+        {" "}
+        {error ? "Errors:" + error.map((e) => e).join(", ") : null}
+      </Typography>
 
       <Formik
         onSubmit={updateEmployees}

@@ -16,6 +16,7 @@ import { Formik, Form } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Assign = ({
   employees,
@@ -30,6 +31,7 @@ const Assign = ({
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const initialValues = {
     name: "",
     description: "",
@@ -55,8 +57,8 @@ const Assign = ({
         setRowSelectionModel([]);
         res.json().then((project) => addNewProject(project));
       } else {
-        res.json().then((errors) => {
-          console.log(errors);
+        res.json().then((json) => {
+          setError(json.errors);
           alert("All fields must be filled out");
         });
       }
@@ -117,6 +119,10 @@ const Assign = ({
   return (
     <Box m="20px">
       <Header title="Assign" subtitle="Assign These Team Members Projects" />
+      <Typography component="h1" variant="h5" color="red">
+        {" "}
+        {error ? "Errors:" + error.map((e) => e).join(", ") : null}
+      </Typography>
       <Box
         m="40px 0 20px 0"
         height="fit-content"
@@ -166,7 +172,7 @@ const Assign = ({
       <Formik
         onSubmit={handleFormSubmit}
         initialValues={initialValues}
-        validationSchema={checkoutSchema}
+        // validationSchema={checkoutSchema}
       >
         {({
           values,
@@ -267,9 +273,9 @@ const Assign = ({
   );
 };
 
-const checkoutSchema = yup.object().shape({
-  name: yup.string().required("required"),
-  description: yup.string().required("required"),
-});
+// const checkoutSchema = yup.object().shape({
+//   name: yup.string().required("required"),
+//   description: yup.string().required("required"),
+// });
 
 export default Assign;

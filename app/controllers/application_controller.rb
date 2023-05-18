@@ -1,14 +1,16 @@
 class ApplicationController < ActionController::API
   include ActionController::Cookies
 
-  def authorize
-    @current_admin = Admin.find_by(id: session[:admin_id])
-    render json: { errors: ["Not authorized"] }, status: :unauthorized unless @current_admin
+  def current_admin
+    Admin.find_by(id: session[:admin_id])
   end
 
-  def current_admin
-    @current_admin
+  def authorize
+    if !current_admin
+      render json: { errors: ["Not authorized"] }, status: :unauthorized
+    end  
   end
+  
 
   def logged_in?
     !!current_admin

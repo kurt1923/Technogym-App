@@ -12,9 +12,11 @@ import { Container } from "@mui/material";
 import image from ".//loginPic.png";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 
 const Login = ({ user, setUser, resetForm }) => {
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -33,15 +35,15 @@ const Login = ({ user, setUser, resetForm }) => {
         navigate("/admin");
         res.json().then((user) => setUser(user));
       } else {
-        res.json().then((errors) => {
-          console.log(errors);
+        res.json().then((json) => {
+          setError(json.errors);
           alert("incorrect email or password");
         });
       }
     });
   };
 
-  console.log(user);
+  console.log(error);
 
   return (
     <Container component="main" maxWidth="lg">
@@ -117,6 +119,9 @@ const Login = ({ user, setUser, resetForm }) => {
                   id="password"
                   autoComplete="current-password"
                 />
+                  <Typography component="h1" variant="h5" color="red">
+                  {error ? error.map(e => <p className='error' key={e}>{e}</p> ) : null}
+                </Typography>
                 <FormControlLabel
                   control={<Checkbox value="remember" color="primary" />}
                   label="Remember me"
@@ -130,11 +135,6 @@ const Login = ({ user, setUser, resetForm }) => {
                   Sign In
                 </Button>
                 <Grid container>
-                  {/* <Grid item xs>
-                    <Link href="#" variant="body2">
-                      Forgot password?
-                    </Link>
-                  </Grid> */}
                   <Grid item>
                     <Link href="signup" variant="body2">
                       {"Don't have an account? Sign Up"}
