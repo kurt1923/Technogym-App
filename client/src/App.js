@@ -15,17 +15,18 @@ import AdminDashboard from "./scenes/admin/admindashboard";
 import Home from "./scenes/tapspages/Home";
 import AddAdmin from "./scenes/admin/addadmin";
 
+
 function App() {
   const [theme, colorMode] = useMode();
-  const [isSidebar, setIsSidebar] = useState(true);
+  // const [isSidebar, setIsSidebar] = useState(true);
   const [employees, setEmployees] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [admin, setAdmin] = useState([]);
   const [rowSelectionModel, setRowSelectionModel] = useState([]);
   const [selectEmployees, setSelectEmployees] = useState([]);
   const [selectProjects, setSelectProjects] = useState([]);
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     fetch("/me").then((response) => {
@@ -56,11 +57,6 @@ function App() {
       .then((data) => setProjects(data));
   }, []);
 
-  useEffect(() => {
-    fetch("/admins")
-      .then((res) => res.json())
-      .then((data) => setAdmin(data));
-  }, []);
 
   console.log(user);
 
@@ -81,10 +77,10 @@ function App() {
     setEmployees(updatedEmployees);
   }
 
-  function handleAddAdmin(newAdmin) {
-    const updatedAdmin = [...admin, newAdmin];
-    setAdmin(updatedAdmin);
-  }
+  // function handleAddAdmin(newAdmin) {
+  //   const updatedAdmin = [...admin, newAdmin];
+  //   setAdmin(updatedAdmin);
+  // }
 
   function handleDeleteProject(id) {
     const updatedProjects = projects.filter((project) => project.id !== id);
@@ -117,14 +113,14 @@ function App() {
         <CssBaseline />
         <div className="app">
           <Sidebar
-            isSidebar={isSidebar}
+            // isSidebar={isSidebar}
             user={user}
             handleLogoutClick={handleLogoutClick}
             adminPic={adminPic}
           />
           <main className="content">
             <Topbar
-              setIsSidebar={setIsSidebar}
+              // setIsSidebar={setIsSidebar}
               handleLogoutClick={handleLogoutClick}
               user={user}
             />
@@ -139,7 +135,6 @@ function App() {
                         user={user}
                         projects={projects}
                         employees={employees}
-                        admin={admin}
                       />
                     }
                   />
@@ -186,7 +181,6 @@ function App() {
                         employees={employees}
                         rowSelectionModel={rowSelectionModel}
                         setRowSelectionModel={setRowSelectionModel}
-                        admin={admin}
                       />
                     }
                   />
@@ -218,7 +212,7 @@ function App() {
                   <AddAdmin
                     user={user}
                     setUser={setUser}
-                    handleAddAdmin={handleAddAdmin}
+                    // handleAddAdmin={handleAddAdmin}
                   />
                 }
               />

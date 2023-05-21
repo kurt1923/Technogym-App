@@ -5,12 +5,12 @@ class EmployeesController < ApplicationController
 
     def index
         employees = Employee.all
-        render json: employees, include: :projects
+        render json: employees
     end
 
     def show
         employee = find_employee
-        render json: employee, include: :projects
+        render json: employee
     end
 
     def create
@@ -29,9 +29,10 @@ class EmployeesController < ApplicationController
         employee.destroy
         head :no_content
     end
+
     
     private
-
+    
     def employee_params
         params.permit(:firstname, :lastname, :email, :password, :phone, :title, :address, :img)
     end
@@ -47,8 +48,9 @@ class EmployeesController < ApplicationController
     def render_unprocessable_entity_response(exception)
         render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
     end
-
+    
     def authorize
         return render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :admin_id
     end
 end
+

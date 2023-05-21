@@ -13,8 +13,12 @@ Rails.application.routes.draw do
   post '/login', to: 'sessions#create'
   delete '/logout', to: 'sessions#destroy'
   get '/me', to: 'admins#show'
-  get '/projects/completed/:completed', to: 'projects#completed'
-  get 'admins/:id/unique_employees_list', to: 'admins#unique_employees_list'
+  get '/projectsbyemployee/:firstname', to: 'projects#projectsbyemployee'
+  # get '/projectDescription/:description', to: 'projects#projectDescription'
+  # get '/projects/completed/:completed', to: 'projects#completed'
+  # get 'admins/:id/unique_employees_list', to: 'admins#unique_employees_list'
+  # get '/getphone/:phone', to: 'employees#getphone'
 
   get "*path", to: "fallback#index", constraints: ->(req) { !req.xhr? && req.format.html? }
 end
+

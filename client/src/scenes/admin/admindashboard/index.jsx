@@ -7,18 +7,13 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../../components/StatBox";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
-import { useEffect, useState } from "react";
 
-const AdminDashboard = ({ user, projects, employees, admin }) => {
+
+
+const AdminDashboard = ({ user, projects, employees }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
-  const [adminEmployees, setAdminEmployees] = useState([]);
-
-  useEffect(() => {
-    fetch(`admins/${user.id}/unique_employees_list`)
-      .then((res) => res.json())
-      .then((data) => setAdminEmployees(data));
-  }, [user.id]);
+ 
 
   const employeesWithProjects = employees.filter((employee) => {
     return employee.projects.length > 0;
@@ -35,8 +30,12 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
     return project.admin_id === user.id && project.completed === true;
   });
 
+  const userProjectsListOrderedById = [...user.employees].sort((a, b) => {
+    return a.id - b.id;
+  });
 
-
+    
+console.log(user.projects)
   
   const sortProjectsByUpdatedDate = projectsCompleted
     .sort((a, b) => {
@@ -351,7 +350,7 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
         </Box>
       </Box>
       <Box paddingTop={3} paddingBottom={3}>
-      <Header title="MY TEAM" subtitle= {`${user.firstname} ${user.lastname} has ${adminEmployees.length} Assigned Employees`} />
+      <Header title="MY TEAM" subtitle= {`${user.firstname} ${user.lastname} has ${user.employees.length} Assigned Employees`} />
       <Box
         m="10px 0 0 0"
         height="40vh"
@@ -409,8 +408,8 @@ const AdminDashboard = ({ user, projects, employees, admin }) => {
           //   handleSelectEmployees(newRowSelectionModel)
           // }}
           // rowSelectionModel={rowSelectionModel}
-          {...adminEmployees}
-          rows={adminEmployees}
+          {...userProjectsListOrderedById}
+          rows={userProjectsListOrderedById}
           columns={columns}
           components={{ Toolbar: GridToolbar }}
         />

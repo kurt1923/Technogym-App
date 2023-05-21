@@ -6,14 +6,16 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
-const AddAdmin = ({ handleAddAdmin }) => {
+const AddAdmin = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const { handleAddAdmin } = useContext(MyContext);
   const initialValues = {
     firstname: "",
     lastname: "",

@@ -12,7 +12,6 @@ const Projects = ({
   setSelectProjects,
   rowSelectionModel,
   setRowSelectionModel,
-  admin,
 }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);

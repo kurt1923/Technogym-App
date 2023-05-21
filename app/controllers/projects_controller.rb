@@ -1,7 +1,7 @@
 class ProjectsController < ApplicationController
     rescue_from ActiveRecord::RecordNotFound, with: :invalid_project
     rescue_from ActiveRecord::RecordInvalid, with: :render_unprocessable_entity_response
-    # before_action :authorize
+    before_action :authorize, only: [:create, :update, :destroy]
 
     def index
         projects = Project.all
@@ -29,31 +29,30 @@ class ProjectsController < ApplicationController
         project.destroy
         head :no_content
     end
-
-    # def completed
-    #     projects = Project.findCompletedProjects(params[:completed])
-    #     render json: projects, include: :admin, include: :employee
-    # end
-
+    
+    
     private
-
+    
     def project_params
         params.permit(:name, :description, :completed, :admin_id, :employee_id, :category)
     end
-
+    
     def find_project
         Project.find(params[:id])
     end
-
+    
     def render_not_found_response
         render json: { error: "Project not found" }, status: :not_found
     end
-
+    
     def render_unprocessable_entity_response(exception)
         render json: { errors: exception.record.errors.full_messages }, status: :unprocessable_entity
     end
-
+    
     def authorize
         return render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :admin_id
     end
 end
+
+
+
