@@ -59,7 +59,7 @@ const Assign = ({
       } else {
         res.json().then((json) => {
           setError(json.errors);
-          alert("All fields must be filled out");
+          // alert("All fields must be filled out");
         });
       }
     });
@@ -68,7 +68,7 @@ const Assign = ({
   console.log(selectEmployees[0]);
   console.log(initialValues);
 
-
+console.log(error)
   const columns = [
     {
       field: "id",

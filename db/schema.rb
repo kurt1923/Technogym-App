@@ -26,8 +26,6 @@ ActiveRecord::Schema.define(version: 2023_03_15_190013) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  #create a custom route that takes in a string of letters and finds all the projects that the employees with that string in there first name are working on and send back the 5 most recent projects associated with the firstname. Included in those projects is a key that {project: "this projects name is #{project.name}"}
-  
 
   create_table "employees", force: :cascade do |t|
     t.string "firstname"

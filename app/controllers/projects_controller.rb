@@ -13,8 +13,15 @@ class ProjectsController < ApplicationController
         render json: project, include: :admin, include: :employee
     end
 
+    # def create
+    #     project = Project.create!(project_params)
+    #     render json: project, status: :created
+    # end
+
     def create
-        project = Project.create!(project_params)
+    
+        admin = Admin.find_by(id: session[:user_id])
+        project = admin.projects.create!(project_params)
         render json: project, status: :created
     end
 
@@ -25,9 +32,10 @@ class ProjectsController < ApplicationController
     end
 
     def destroy
-        project = find_project
+        user = User.find(session[:user_id])
+        project = user.projects.find(params[:id])
         project.destroy
-        head :no_content
+        render json: application
     end
     
     

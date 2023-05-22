@@ -22,7 +22,7 @@ before_action :authorize, only: [:show, :update]
 
     def create
         admin = Admin.create!(admin_params)
-        # session[:admin_id] = admin.id
+        session[:admin_id] = admin.id
         render json: admin, status: :created
     end
 
