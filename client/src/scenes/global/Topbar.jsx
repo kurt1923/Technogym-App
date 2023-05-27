@@ -1,5 +1,4 @@
 import { Box, IconButton, Tooltip, useTheme } from "@mui/material";
-import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
 // import InputBase from "@mui/material/InputBase";
 // import SearchIcon from "@mui/icons-material/Search";
@@ -9,11 +8,14 @@ import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined
 import PersonOutlinedIcon from "@mui/icons-material/PersonOutlined";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { MyContext } from "../../MyContext";
 
-const Topbar = ({ handleLogoutClick, user }) => {
+const Topbar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const colorMode = useContext(ColorModeContext);
+  const { handleLogoutClick, user } = useContext(MyContext);
   const navigate = useNavigate();
 
   function home() {

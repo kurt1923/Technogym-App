@@ -7,12 +7,15 @@ import TrafficIcon from "@mui/icons-material/Traffic";
 import StatBox from "../../../components/StatBox";
 import ReceiptOutlinedIcon from "@mui/icons-material/ReceiptOutlined";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
+import React, { useContext } from "react";
+import { MyContext } from "../../../MyContext"; 
 
 
 
-const AdminDashboard = ({ user, projects, employees }) => {
+const AdminDashboard = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const {user, projects, employees} = useContext(MyContext)
  
 
   const employeesWithProjects = employees.filter((employee) => {
@@ -65,14 +68,7 @@ console.log(user.projects)
     })
     .slice(0, 3);
 
-  // const totalEmployeesByTitle = employees.reduce((acc, employee) => {
-  //   if (acc[employee.title]) {
-  //     acc[employee.title] += 1;
-  //   } else {
-  //     acc[employee.title] = 1;
-  //   }
-  //   return acc;
-  // }, {});
+
 
   const columns = [
     {
@@ -183,7 +179,7 @@ console.log(user.projects)
         >
           <StatBox
             title={employees.length + " Employees"}
-            subtitle={employeesWithProjects.length + "Assigned"}
+            subtitle={employeesWithProjects.length + " Assigned"}
             progress={employeesWithProjects.length / employees.length}
             increase={
               ((employeesWithProjects.length * 100) / employees.length).toFixed(

@@ -13,23 +13,23 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../../components/Header";
 import { Formik, Form } from "formik";
-import * as yup from "yup";
+// import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import React, { useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
-const Assign = ({
-  employees,
-  projects,
-  selectEmployees,
-  addNewProject,
-  user,
-  setSelectEmployees,
-  setRowSelectionModel
-}) => {
+const Assign = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
+  const {
+    selectEmployees,
+    addNewProject,
+    user,
+    setRowSelectionModel,
+  } = useContext(MyContext);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const initialValues = {
@@ -68,7 +68,7 @@ const Assign = ({
   console.log(selectEmployees[0]);
   console.log(initialValues);
 
-console.log(error)
+  console.log(error);
   const columns = [
     {
       field: "id",

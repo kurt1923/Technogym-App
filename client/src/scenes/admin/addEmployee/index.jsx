@@ -7,11 +7,14 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import { useNavigate } from "react-router-dom";
 import Typography from "@mui/material/Typography";
 import { useState } from "react";
+import React, { useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
-const AddEmployee = ({ handleAddEmployee }) => {
+const AddEmployee = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { handleAddEmployee } = useContext(MyContext);
   const navigate = useNavigate();
   const [error, setError] = useState(null);
   const initialValues = {
@@ -35,6 +38,7 @@ const AddEmployee = ({ handleAddEmployee }) => {
     }).then((res) => {
       if (res.ok) {
         navigate("/admin/team");
+        alert(`${values.firstname} ${values.lastname} added to team`);
         res.json().then((employee) => handleAddEmployee(employee));
       } else {
         res.json().then((json) => {

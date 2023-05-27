@@ -6,20 +6,23 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined";
 import SecurityOutlinedIcon from "@mui/icons-material/SecurityOutlined";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
-const Team = ({
-  employees,
-  setRowSelectionModel,
-  rowSelectionModel,
-  selectEmployees,
-  setSelectEmployees,
-  handleDeleteEmployee,
-  user
-}) => {
+const Team = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const navigate = useNavigate();
-  console.log(user)
+  const {
+    employees,
+    setRowSelectionModel,
+    rowSelectionModel,
+    selectEmployees,
+    setSelectEmployees,
+    handleDeleteEmployee,
+    user,
+  } = useContext(MyContext);
+  console.log(user);
 
   function handleSelectEmployees(rowSelectionModel) {
     const selectedEmployees = employees.filter((employee) => {
@@ -36,14 +39,15 @@ const Team = ({
     fetch(`/employees/${selectEmployees[0].id}`, {
       method: "DELETE",
     });
-    alert(`Employee ${selectEmployees[0].firstname} ${selectEmployees[0].lastname} Deleted`);
+    alert(
+      `Employee ${selectEmployees[0].firstname} ${selectEmployees[0].lastname} Deleted`
+    );
     setSelectEmployees([]);
     handleDeleteEmployee(selectEmployees[0].id);
   }
 
   console.log(rowSelectionModel);
-  console.log(selectEmployees);
-  
+
   const columns = [
     {
       field: "id",
@@ -56,7 +60,9 @@ const Team = ({
       headerName: "Image",
       flex: 1,
       cellClassName: "name-column--cell",
-      renderCell: (params) => <img src={params.value} alt = "employee" width="50px" height="50px" />
+      renderCell: (params) => (
+        <img src={params.value} alt="employee" width="50px" height="50px" />
+      ),
     },
     {
       field: "lastname",
@@ -107,7 +113,7 @@ const Team = ({
       },
     },
   ];
-  
+
   return (
     <Box m="20px">
       <Header title="TEAM" subtitle="Managing the Team Members" />
@@ -153,19 +159,19 @@ const Team = ({
             backgroundColor: colors.grey[700],
             border: "none",
           },
-          "img": {
+          img: {
             width: "5vwv",
             height: "5vw",
             borderRadius: "90%",
             border: "2px solid #fff",
-          }
+          },
         }}
       >
         <DataGrid
           checkboxSelection
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
-            handleSelectEmployees(newRowSelectionModel)
+            handleSelectEmployees(newRowSelectionModel);
           }}
           rowSelectionModel={rowSelectionModel}
           {...employees}
@@ -177,7 +183,9 @@ const Team = ({
       {selectEmployees.length === 0 ? (
         <Box display="flex" justifyContent="end" mt="20px">
           <Button
-            onClick={() => {alert ("Select an Employee By Clicking the Checkbox")}}
+            onClick={() => {
+              alert("Select an Employee By Clicking the Checkbox");
+            }}
             type="submit"
             sx={{
               backgroundColor: colors.blueAccent[300],

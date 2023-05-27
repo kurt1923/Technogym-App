@@ -13,36 +13,35 @@ class ProjectsController < ApplicationController
         render json: project, include: :admin, include: :employee
     end
 
-    # def create
-    #     project = Project.create!(project_params)
-    #     render json: project, status: :created
-    # end
-
     def create
-    
-        admin = Admin.find_by(id: session[:user_id])
+        admin = find_admin
         project = admin.projects.create!(project_params)
         render json: project, status: :created
     end
 
     def update
-        project = find_project
+        admin = find_admin
+        project = admin.projects.find(params[:id])
         project.update!(project_params)
         render json: project
     end
 
     def destroy
-        user = User.find(session[:user_id])
-        project = user.projects.find(params[:id])
+        admin = find_admin
+        project = admin.projects.find(params[:id])
         project.destroy
-        render json: application
+        render json: project
     end
     
     
     private
     
     def project_params
-        params.permit(:name, :description, :completed, :admin_id, :employee_id, :category)
+        params.permit(:name, :description, :completed, :employee_id, :category)
+    end
+
+    def find_admin
+        Admin.find(session[:user_id])
     end
     
     def find_project
@@ -58,7 +57,7 @@ class ProjectsController < ApplicationController
     end
     
     def authorize
-        return render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :admin_id
+        return render json: { errors: ["Not authorized"] }, status: :unauthorized unless session.include? :user_id
     end
 end
 

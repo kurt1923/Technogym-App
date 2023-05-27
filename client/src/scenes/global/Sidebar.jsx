@@ -17,6 +17,8 @@ import MapOutlinedIcon from "@mui/icons-material/MapOutlined";
 import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
 import LocalPoliceIcon from "@mui/icons-material/LocalPolice";
 import MilitaryTechIcon from "@mui/icons-material/MilitaryTech";
+import React, { useContext } from "react";
+import { MyContext } from "../../MyContext";
 
 
 const Item = ({ title, to, icon, selected, setSelected }) => {
@@ -39,9 +41,10 @@ const Item = ({ title, to, icon, selected, setSelected }) => {
   );
 };
 
-const Sidebar = ({ user, handleLogoutClick, adminPic }) => {
+const Sidebar = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { handleLogoutClick, user, adminPic } = useContext(MyContext);
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [selected, setSelected] = useState("Dashboard");
 

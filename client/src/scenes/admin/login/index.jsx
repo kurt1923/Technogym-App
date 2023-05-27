@@ -13,11 +13,14 @@ import image from ".//loginPic.png";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import React, { useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
 
-const Login = ({ user, setUser, resetForm }) => {
+const Login = () => {
   const navigate = useNavigate();
   const [error, setError] = useState(null);
+  const { setUser } = useContext(MyContext);
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

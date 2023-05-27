@@ -1,20 +1,24 @@
-import { Box,  useTheme, Button } from "@mui/material";
+import { Box, useTheme, Button } from "@mui/material";
 import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { useNavigate } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
-const Projects = ({
-  employees,
-  projects,
-  handleDeleteProject,
-  selectProjects,
-  setSelectProjects,
-  rowSelectionModel,
-  setRowSelectionModel,
-}) => {
+const Projects = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const [error, setError] = useState(null);
+  const {
+    user,
+    projects,
+    handleDeleteProject,
+    selectProjects,
+    setSelectProjects,
+    rowSelectionModel,
+    setRowSelectionModel,
+  } = useContext(MyContext);
 
   const complete = (params) => {
     return params.row.completed ? "Completed" : "Ongoing";
@@ -24,7 +28,6 @@ const Projects = ({
     const date = new Date(params.row.created_at);
     return date.toDateString();
   };
-
 
   const navigate = useNavigate();
   const columns = [
@@ -72,18 +75,35 @@ const Projects = ({
   function deleteProject() {
     fetch(`/projects/${selectProjects[0].id}`, {
       method: "DELETE",
-    });
-    handleDeleteProject(selectProjects[0].id);
-    setSelectProjects([]);
+    })
+      .then((res) => {
+        if (res.ok) {
+          setSelectProjects([]);
+          alert(`Project ${selectProjects[0].name} Deleted`);
+          res.json().then((project) => handleDeleteProject(project));
+        } else {
+          res.json().then((json) => {
+            alert(
+              `${user.firstname} ${user.lastname} does not have permission to delete this project`
+            );
+            setError(json.errors);
+          });
+        }
+      })
+      .catch((error) => {
+        console.log("Error:", error);
+      });
   }
+
+  console.log(error);
 
   function handleSelectProjects(rowSelectionModel) {
     const selectedProjects = projects.filter((project) => {
       return rowSelectionModel.includes(project.id);
     });
     rowSelectionModel.length === 0
-    ? setSelectProjects([])
-    : setSelectProjects(selectedProjects);
+      ? setSelectProjects([])
+      : setSelectProjects(selectedProjects);
   }
 
   function navToEdit() {
@@ -91,7 +111,7 @@ const Projects = ({
   }
 
   console.log(selectProjects);
-  console.log(rowSelectionModel)
+  console.log(rowSelectionModel);
 
   return (
     <Box m="20px">
@@ -139,7 +159,7 @@ const Projects = ({
           checkboxSelection={true}
           onRowSelectionModelChange={(newRowSelectionModel) => {
             setRowSelectionModel(newRowSelectionModel);
-            handleSelectProjects(newRowSelectionModel)
+            handleSelectProjects(newRowSelectionModel);
           }}
           rowSelectionModel={rowSelectionModel}
           {...projects}
@@ -151,7 +171,9 @@ const Projects = ({
       {selectProjects.length === 0 ? (
         <Box display="flex" justifyContent="end" mt="20px">
           <Button
-            onClick={() => {alert ("Select a Project By Clicking the Checkbox")}}
+            onClick={() => {
+              alert("Select a Project By Clicking the Checkbox");
+            }}
             type="submit"
             sx={{
               backgroundColor: colors.blueAccent[300],

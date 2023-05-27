@@ -3,11 +3,13 @@ import { DataGrid, GridToolbar } from "@mui/x-data-grid";
 import { tokens } from "../../theme";
 import Header from "../../components/Header";
 import { useTheme } from "@mui/material";
+import React, { useContext } from "react";
+import { MyContext } from "../../MyContext";
 
-
-const Contacts = ({ employees }) => {
+const Contacts = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
+  const { employees } = useContext(MyContext);
 
   const columns = [
     { field: "id", headerName: "ID", flex: 0.5 },
@@ -42,15 +44,12 @@ const Contacts = ({ employees }) => {
       field: "title",
       headerName: "Title",
       flex: 1,
-    }
+    },
   ];
 
   return (
     <Box m="20px">
-      <Header
-        title="CONTACTS"
-        subtitle="TAPS Employee Contact List"
-      />
+      <Header title="CONTACTS" subtitle="TAPS Employee Contact List" />
       <Box
         m="40px 0 0 0"
         height="75vh"

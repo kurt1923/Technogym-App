@@ -1,17 +1,28 @@
-import React, { useState } from "react";
-import { Box, Typography, useTheme, Button, TextField, Checkbox } from "@mui/material";
+import { useState } from "react";
+import {
+  Box,
+  Typography,
+  useTheme,
+  Button,
+  TextField,
+  Checkbox,
+} from "@mui/material";
 import { tokens } from "../../../theme";
 import Header from "../../../components/Header";
 import { Formik, Form } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
-import { useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import React, { useContext } from "react";
+import { MyContext } from "../../../MyContext";
 
-const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
+const EditProject = () => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const { user, selectProjects, handleUpdateProject, setRowSelectionModel } = useContext(MyContext);
 
   const [initialValues, setInitialValues] = useState({
     name: selectProjects[0].name,
@@ -21,7 +32,6 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
     admin_id: 1,
   });
 
-
   function updateProject(values) {
     fetch(`/projects/${selectProjects[0].id}`, {
       method: "PATCH",
@@ -29,15 +39,27 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(values),
-    })
-      .then((r) => r.json())
-      .then((data) => {
-        handleUpdateProject(data);
-        alert(`Project ${values.name} Updated`);
+    }).then((res) => {
+      if (res.ok) {
         navigate("/admin/projects");
-      });
+        alert(`Project ${values.name} Updated`);
+        res.json().then((project) => handleUpdateProject(project));
+      } else {
+        res.json().then((json) => {
+          navigate("/admin/projects");
+          alert(
+            `${user.firstname} ${user.lastname} does not have permission to edit this project`
+            );
+            setError(json.errors);
+          });
+        }
+        setRowSelectionModel([]);
+    });
   }
-  console.log(selectProjects)
+
+  console.log(error);
+
+  console.log(selectProjects);
   return (
     <Box m="20px">
       <Header
@@ -81,10 +103,9 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
                   color: colors.primary[900],
                   borderRadius: "4px",
                 },
-                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" 
-              },
-              "& .MuiCheckbox-root": {
-                color: colors.primary[900],
+                "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
+                "& .MuiCheckbox-root": {
+                  color: colors.primary[900],
                 },
                 "& .MuiCheckbox-colorSecondary.Mui-checked": {
                   color: colors.primary[900],
@@ -119,23 +140,27 @@ const EditProject = ({ projects, selectProjects, handleUpdateProject }) => {
                 helperText={touched.description && errors.description}
                 sx={{ gridColumn: "span 2", color: colors.primary[900] }}
               />
-              <Typography variant="h6" sx={{ color: colors.primary[900],
-              paddingLeft: "10px"
-              }}>
+              <Typography
+                variant="h6"
+                sx={{ color: colors.primary[900], paddingLeft: "10px" }}
+              >
                 Completed
-              <Checkbox
-                label="Completed"
-                title="Completed"
-                value={values.completed}
-                checked={values.completed}
-                onChange={handleChange}
-                name="completed"
-                sx={{color: colors.primary[900], 
-                }}
-              />
+                <Checkbox
+                  label="Completed"
+                  title="Completed"
+                  value={values.completed}
+                  checked={values.completed}
+                  onChange={handleChange}
+                  name="completed"
+                  sx={{ color: colors.primary[900] }}
+                />
               </Typography>
               <Box display="flex" justifyContent="center" m="10px" p="10px">
-                <Button type="submit" sx={{ backgroundColor: colors.blueAccent[300] }} variant="contained">
+                <Button
+                  type="submit"
+                  sx={{ backgroundColor: colors.blueAccent[300] }}
+                  variant="contained"
+                >
                   Submit Project
                 </Button>
               </Box>
